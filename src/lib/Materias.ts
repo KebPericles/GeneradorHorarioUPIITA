@@ -1,3 +1,5 @@
+import { Color } from "./Color";
+
 export enum Dia {
 	Lunes,
 	Martes,
@@ -49,6 +51,7 @@ export class Materia {
 	grupo: string = "";
 	profesor: string = "";
 	horario: Clase[] = [];
+	color: Color = new Color();
 
 	constructor(options?: MateriaOptions) {
 		if (options) {

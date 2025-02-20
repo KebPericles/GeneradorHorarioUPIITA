@@ -28,7 +28,6 @@ export const obtenerNombresDeMaterias = (materias: Materia[]) => {
 export const crearCombinaciones = (materiasSeleccionadas: Materia[]) => {
 	let horariosMateria: Map<string, Materia[]> = new Map();
 	let nombres: Set<string> = new Set();
-	console.log(materiasSeleccionadas);
 
 	for (let i = 0; i < materiasSeleccionadas.length; i++) {
 		const materia = materiasSeleccionadas[i];

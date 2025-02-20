@@ -9,15 +9,18 @@
 ### Tareas
 
 - Menú para seleccionar las materias a incluir en el horario
-  - Selección por grupo
   - Selección por profesor (no prioridad)
   - Selección por materia (no prioridad)
   - Excluir horarios (no prioridad)
+
+- Menú de materias seleccionadas
 
 - Generar horarios
 - Visualizar horarios ---------|> (Requerimiento fundamental)
   - Diseño adaptable
   - Diseño ---------|> (Requerimiento fundamental)
+    - Colores de materias
+    - Espaciado entre columnas
 
 - Barra de busqueda tanto en el menú de selección como en la selección
 
@@ -28,6 +31,7 @@
 
 ### Mejoras
 - Diferentes carreras
+  - Tal vez separar los horarios de cada carrera en archivos. 
 - Soporte para niveles de materias (extendible a semestres, trayectorias recomendadas, etc.)
 - Compartir horario
 - Soporte para otras escuelas
@@ -35,6 +39,7 @@
   - Cupos disponibles
     - Extensión para checar cupos disponibles entre ambas páginas: esta idea se ve más prometedora, ya que no será necesario montar un servidor
     - Socket para checar cupos disponibles
+
 
 ### Base de datos
 Los datos de los horarios se extraen del SAES con ayuda de la extensión MOD SAES así:

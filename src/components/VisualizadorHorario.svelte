@@ -25,7 +25,6 @@
 
 		for (const dia in Object.keys(Dia).filter((v) => isNaN(Number(v)))) {
 			eventos[dia] = eventos[dia] ?? [];
-			console.log(eventos);
 			horariosPosibles[pagina].forEach((materia) => {
 				if (materia.estaVacia) return;
 				if (materia.horario.length === 0) return;
@@ -38,11 +37,11 @@
 						dia: clase.dia,
 						horaInicio: Temporal.PlainTime.from(clase.horaInicio),
 						horaFin: Temporal.PlainTime.from(clase.horaFin),
+						color: materia.color.cssRGBA(),
 					});
 				});
 			});
 		}
-		console.log(eventos);
 
 		return eventos;
 	});
