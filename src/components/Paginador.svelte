@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	interface Props {
 		pagina: number;
 		paginas: number;
@@ -9,11 +8,15 @@
 
 <svelte:window
 	on:keydown={(e) => {
+		if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+		e.preventDefault();
+		document
+			.getElementById("vista-horario")
+			?.scrollIntoView({ behavior: "smooth" });
+
 		if (e.key === "ArrowLeft") {
-			e.preventDefault();
 			pagina = Math.max(0, pagina - 1);
 		} else if (e.key === "ArrowRight") {
-			e.preventDefault();
 			pagina = Math.min(paginas - 1, pagina + 1);
 		}
 	}}
@@ -71,7 +74,7 @@
 	</div>
 	<div class="w-md align-middle flex justify-center self-center text-xl">
 		{#if paginas > 0}
-			{pagina+1} / {paginas}
+			{pagina + 1} / {paginas}
 		{:else}
 			0
 		{/if}
