@@ -93,10 +93,83 @@
 	$effect(() => {
 		modosSeleccion[modoSeleccion]();
 	});
+	let visible = $state(true);
 </script>
 
-<aside class={classs}>
-	<div>
+<aside
+	class="transition-[width] transition-discrete has-checked:w-[40%] has-checked:md:w-[35%] not-has-checked:w-0 flex flex-col relative"
+>
+	{#if visible}
+		<input hidden class="peer" type="checkbox" checked />
+	{:else}
+		<input hidden class="peer" type="checkbox" />
+	{/if}
+
+	<div
+		class="absolute top-0 bottom-0 -left-12 w-12 flex flex-col justify-center p-2 bg-amber-950"
+	>
+		<button
+			aria-label="Mostrar u ocultar selector de materias"
+			class="w-full h-full contents"
+			onclick={() => (visible = !visible)}
+		>
+			{#if visible}
+				<svg
+					class="h-full w-auto"
+					fill="#ffffff"
+					version="1.1"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 512.01 512.01"
+					xml:space="preserve"
+					stroke="#ffffff"
+					stroke-width="0.00512006"
+					><g stroke-width="0"></g><g
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke="#CCCCCC"
+						stroke-width="2.048024"
+					></g><g>
+						<g>
+							<g>
+								<path
+									d="M388.419,475.59L168.834,256.005L388.418,36.421c8.341-8.341,8.341-21.824,0-30.165s-21.824-8.341-30.165,0 L123.586,240.923c-8.341,8.341-8.341,21.824,0,30.165l234.667,234.667c4.16,4.16,9.621,6.251,15.083,6.251 c5.461,0,10.923-2.091,15.083-6.251C396.76,497.414,396.76,483.931,388.419,475.59z"
+								></path>
+							</g>
+						</g>
+					</g></svg
+				>
+			{:else}
+				<svg
+					class="h-full w-auto"
+					fill="#ffffff"
+					version="1.1"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 512.01 512.01"
+					xml:space="preserve"
+					stroke="#ffffff"
+					stroke-width="0.00512006"
+					transform="matrix(-1, 0, 0, 1, 0, 0)"
+					><g stroke-width="0"></g><g
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke="#CCCCCC"
+						stroke-width="2.048024"
+					></g><g>
+						<g>
+							<g>
+								<path
+									d="M388.419,475.59L168.834,256.005L388.418,36.421c8.341-8.341,8.341-21.824,0-30.165s-21.824-8.341-30.165,0 L123.586,240.923c-8.341,8.341-8.341,21.824,0,30.165l234.667,234.667c4.16,4.16,9.621,6.251,15.083,6.251 c5.461,0,10.923-2.091,15.083-6.251C396.76,497.414,396.76,483.931,388.419,475.59z"
+								></path>
+							</g>
+						</g>
+					</g></svg
+				>
+			{/if}
+		</button>
+	</div>
+	<div class="relative w-full peer-not-checked:hidden">
 		<Button class="w-[100%]"
 			>{modoSeleccion}<ChevronDownOutline
 				class="w-6 h-6 ms-2 text-white dark:text-white"
@@ -114,7 +187,7 @@
 			{/each}
 		</Dropdown>
 	</div>
-	<ul class=" overflow-y-auto m-1">
+	<ul class=" overflow-y-auto m-1 peer-not-checked:hidden">
 		{#each modosSeleccion[modoSeleccion]() as seleccionable}
 			<li
 				class="text-start min-h-12 flex flex-row gap-2 items-center justify-between"
