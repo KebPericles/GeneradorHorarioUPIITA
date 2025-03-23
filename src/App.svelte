@@ -1,5 +1,6 @@
 <script lang="ts">
-	import SelectorMaterias from "./components/SelectorMaterias.svelte";
+	import ListaMaterias from "./components/ListaMaterias.svelte";
+import SelectorMaterias from "./components/SelectorMaterias.svelte";
 	import VisualizadorHorario from "./components/VisualizadorHorario.svelte";
 	import {
 		crearCombinaciones,
@@ -31,25 +32,12 @@
 <header class="justify-between w-full py-4">
 	<h1>Generador de horarios UPIITA</h1>
 </header>
-<div class="flex flex-row gap-4 p-4 max-h-[60svh]">
+<div class="flex flex-row gap-4 p-4 h-[65svh]">
 	<SelectorMaterias
 		{todasLasMaterias}
 		bind:materiasSeleccionadas
-		classs=" w-[40%] md:w-[35%] flex flex-col"
 	/>
-	<article class=" w-[60%] md:w-[65%] flex overflow-y-auto">
-		<h2>Este es el generador de horario UPIITA</h2>
-
-		<!-- 
-  Precondiciones:
-  - Datos de materias ya cargados en el servidor
-
-  Proceso:
-  - Escoger materia
-  -->
-
-		<pre>{JSON.stringify(materiasSeleccionadas)}</pre>
-	</article>
+	<ListaMaterias {materiasSeleccionadas} />
 </div>
 <VisualizadorHorario {horariosPosibles} {cantidadDeMateriasSeleccionadas} />
 
