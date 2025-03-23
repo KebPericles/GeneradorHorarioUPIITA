@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/**
+ * Tooltip con clase has-tooltip
+ * Extraído de https://github.com/cosbgn/tailwindcss-tooltips
+ **/
 .tooltip {
 	@apply invisible opacity-0 transition-[opacity] ease-out duration-500;
 }
