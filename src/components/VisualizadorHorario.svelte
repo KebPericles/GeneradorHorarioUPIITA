@@ -47,14 +47,11 @@
 	});
 </script>
 
-<main class="flex flex-col gap-2 w-full">
+<main class="flex flex-col gap-2 w-full min-h-[80svh]" id="vista-horario">
 	<Paginador bind:pagina {paginas} />
 	{#if horariosPosibles[pagina]?.length > 0}
 		<article class="relative w-full">
 			<Calendario intervaloMinutos={90} {eventosSemana}></Calendario>
-			<pre>
-				{JSON.stringify(horariosPosibles[pagina], null, 2)}
-			</pre>
 		</article>
 	{:else if cantidadDeMateriasSeleccionadas === 0}
 		<h3>Aún no has seleccionado ninguna materia.</h3>

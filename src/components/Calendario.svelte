@@ -16,7 +16,7 @@
 		horaFin: Temporal.PlainTime;
 		/**
 		 * String del color en algun formato que pueda ser usado por CSS.
-		 * 
+		 *
 		 * @example rgb(255, 0, 0)
 		 */
 		color: string;
@@ -95,9 +95,9 @@
 			intervaloHoras.duracion.total("minutes");
 
 		// TODO:
-		// BUG: Error de redondeo, 
-		posicionStyle = `top: ${Math.round(proporcionHoras * 100)}%;`;
-		posicionStyle += `height: ${Math.round(proporcionDuracion * 100)}%;`;
+		// BUG: Error de redondeo,
+		posicionStyle = `top: ${Math.floor(proporcionHoras * 100_00) / 100}%;`;
+		posicionStyle += `height: ${Math.floor(proporcionDuracion*100_00) / 100}%;`;
 
 		return posicionStyle;
 	};
@@ -110,7 +110,7 @@
 		// predefinida. El problema es que podrían ser colores insuficientes
 		// para todas las materias, también podrían aplicarse pequeñas variaciones
 		// en el color de dos grupos de una misma materia, etc.
-		// 
+		//
 		// Otro problema es que hasta ahora solo se puede colorear el fondo, no
 		// el texto. Por ende solo se podría ajustar a un tipo de tema (dark o light)
 		// y luego aplicar el color de fondo a todo el texto. Tal vez sea prioridad
@@ -124,17 +124,17 @@
 	};
 </script>
 
-<div class="w-full h-full bg-gray-50 dark:bg-gray-700">
-	<ul class="flex flex-row w-full h-16">
+<div class="calendario w-full h-full bg-gray-50 dark:bg-gray-700 rounded-4xl">
+	<ul class="flex flex-row w-full h-[8svh]">
 		<li class="w-full h-full bg-gray-100 dark:bg-gray-800">Horas</li>
 		{#each Object.keys(Dia).filter((v) => isNaN(Number(v))) as dia}
 			<li class="w-full h-full bg-gray-200 dark:bg-gray-700">{dia}</li>
 		{/each}
 	</ul>
-	<ul class="flex flex-row w-full h-[60svh]">
+	<ul class="flex flex-row w-full max-h-[80svh]">
 		<li class="w-full flex flex-col">
 			{#each horasTemporal as hora}
-				<div class="w-full h-full bg-gray-100 dark:bg-gray-800">
+				<div class="w-full h-[7svh] bg-gray-100 dark:bg-gray-800">
 					{hora.toString({ smallestUnit: "minute" })}
 				</div>
 			{/each}
