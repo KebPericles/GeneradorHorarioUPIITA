@@ -832,3 +832,21 @@ export class Color {
 		return this;
 	}
 } // END class
+
+const colores_wil = [
+	[102, 0, 0],
+	[102, 54, 0],
+	[92, 102, 0],
+	[37, 102, 0],
+	[0, 102, 17],
+	[0, 102, 73],
+	[0, 75, 102],
+	[0, 19, 102],
+	[36, 0, 102],
+	[92, 0, 102],
+	[102, 0, 56],
+];
+
+export const ColoresUwU = colores_wil.map((rgb) =>
+	Color.makeRGB(rgb[0], rgb[1], rgb[2])
+);

@@ -1,4 +1,4 @@
-import { Color } from "./Color";
+import { Color, ColoresUwU } from "./Color";
 
 export enum Dia {
 	Lunes,
@@ -43,6 +43,7 @@ export type MateriaOptions = {
 	grupo: string;
 	profesor: string;
 	horario: Clase[];
+	color?: number;
 };
 
 export class Materia {
@@ -59,6 +60,7 @@ export class Materia {
 			this.grupo = options.grupo ?? "";
 			this.profesor = options.profesor ?? "";
 			this.horario = options.horario ?? [];
+			this.color = options.color !== undefined ? ColoresUwU[options.color] : ColoresUwU[0]; // TODO: test options.color nunca null
 		}
 	}
 
@@ -179,6 +181,7 @@ export const materiasFromJSON = (json: string) => {
 				grupo: materia.grupo,
 				profesor: materia.profesor,
 				horario: materia.horario,
+				color: Math.round(Math.random() * 10),
 			})
 		);
 	}
