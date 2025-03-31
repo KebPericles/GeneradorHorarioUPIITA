@@ -14,6 +14,7 @@
   - Excluir horarios (no prioridad)
 
 - Menú de materias seleccionadas
+  - Reordenar a voluntad (no prioridad)
 
 - Generar horarios
 - Visualizar horarios ---------|> (Requerimiento fundamental)
