@@ -97,7 +97,7 @@
 </script>
 
 <aside
-	class="transition-[width] transition-discrete has-checked:w-[40%] has-checked:md:w-[35%] not-has-checked:w-0 flex flex-col relative"
+	class=" transition-[width] transition-discrete has-checked:lg:w-[40%] has-checked:md:w-[40%] not-md:w-[100%] not-md:h-[60svh] md:h-full not-has-checked:w-0 block relative"
 >
 	{#if visible}
 		<input hidden class="peer" type="checkbox" checked />
@@ -106,7 +106,7 @@
 	{/if}
 
 	<div
-		class="absolute top-0 bottom-0 -left-12 w-12 flex flex-col justify-center p-2 bg-amber-950"
+		class="absolute top-0 bottom-0 -left-12 w-12 md:flex flex-col justify-center p-2 bg-amber-950 not-md:hidden"
 	>
 		<button
 			aria-label="Mostrar u ocultar selector de materias"
@@ -169,8 +169,9 @@
 			{/if}
 		</button>
 	</div>
-	<div class="relative w-full peer-not-checked:hidden">
-		<Button class="w-[100%]"
+
+	<div class="relative w-full h-11 peer-not-checked:hidden">
+		<Button class="w-[100%] h-full"
 			>{modoSeleccion}<ChevronDownOutline
 				class="w-6 h-6 ms-2 text-white dark:text-white"
 			/></Button
@@ -187,12 +188,14 @@
 			{/each}
 		</Dropdown>
 	</div>
-	<ul class=" overflow-y-auto m-1 peer-not-checked:hidden">
+	<ul class="h-[calc(100%-2.75rem)] overflow-y-auto p-1 peer-not-checked:hidden">
 		{#each modosSeleccion[modoSeleccion]() as seleccionable}
 			<li
 				class="text-start min-h-12 flex flex-row gap-2 items-center justify-between"
 			>
-				<div class=" break-words text-wrap px-2">{seleccionable}</div>
+				<div class=" break-words hyphens-auto text-wrap px-2">
+					{seleccionable}
+				</div>
 				<div class="w-[100px] h-full p-2 flex flex-row gap-1">
 					<Agregar
 						click={agregarClick[modoSeleccion]}

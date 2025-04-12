@@ -25,21 +25,19 @@
 	});
 </script>
 
-<article class="w-full md:w-full flex overflow-y-auto">
+<article class="not-md:w-[100%] md:w-full flex overflow-y-auto">
 	{#if materiasSeleccionadas.length > 0}
-		<ul class="flex flex-col w-full" id="lista-materias">
+		<ul class="block w-full " id="lista-materias">
 			{#each materiasSeleccionadas as materia}
-				<li class="bg-amber-800 rounded-xl p-2 m-0.5">
-					<div class="flex flex-row gap-1 items-center">
-						<div class="min-w-16 h-full rounded-xl p-2">
-							{materia.grupo}
-						</div>
-						<div class="w-full h-full bg-amber-500 rounded-xl p-2">
-							{materia.nombre}
-						</div>
-						<div class="w-full h-full bg-amber-500 rounded-xl p-2">
-							{materia.profesor}
-						</div>
+				<li class="w-[100%] inline-flex gap-2 p-2 my-0.5 bg-amber-600 rounded-xl">
+					<div class="w-16 content-center break-words text-wrap">
+						{materia.grupo}
+					</div>
+					<div class="w-[calc((100%-5rem)/2)] content-center">
+						{materia.nombre}
+					</div>
+					<div class="w-[calc((100%-5rem)/2)] content-center">
+						{materia.profesor}
 					</div>
 				</li>
 			{/each}
@@ -53,6 +51,12 @@
 </article>
 
 <style>
+	.parent {
+		display: grid;
+		grid-template-columns: 1fr repeat(2, 3fr) repeat(6, 1fr);
+		grid-column-gap: 0;
+	}
+
 	/* width */
 	::-webkit-scrollbar {
 		width: 8px;
