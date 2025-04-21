@@ -27,9 +27,11 @@
 
 <article class="not-md:w-[100%] md:w-full flex overflow-y-auto">
 	{#if materiasSeleccionadas.length > 0}
-		<ul class="block w-full " id="lista-materias">
+		<ul class="block w-full" id="lista-materias">
 			{#each materiasSeleccionadas as materia}
-				<li class="w-[100%] inline-flex gap-2 p-2 my-0.5 bg-amber-600 rounded-xl">
+				<li
+					class="w-[100%] inline-flex gap-2 p-2 my-0.5 bg-amber-600 rounded-xl"
+				>
 					<div class="w-16 content-center break-words text-wrap">
 						{materia.grupo}
 					</div>
@@ -51,12 +53,6 @@
 </article>
 
 <style>
-	.parent {
-		display: grid;
-		grid-template-columns: 1fr repeat(2, 3fr) repeat(6, 1fr);
-		grid-column-gap: 0;
-	}
-
 	/* width */
 	::-webkit-scrollbar {
 		width: 8px;

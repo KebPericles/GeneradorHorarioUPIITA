@@ -5,6 +5,7 @@
 	import { Materia } from "../lib/Materias";
 	import Agregar from "./Agregar.svelte";
 	import Eliminar from "./Eliminar.svelte";
+	import FlechaDropdown from "./FlechaDropdown.svelte";
 
 	interface Props {
 		todasLasMaterias: Materia[];
@@ -69,20 +70,20 @@
 					});
 			},
 			agregar: (materiaNombre: string) => {
-			console.log("Agregar por materia: ", materiaNombre);
+				console.log("Agregar por materia: ", materiaNombre);
 
-			let materiasAgregar = todasLasMaterias.filter((materia) => {
-				return materia.nombre === materiaNombre;
-			});
-
-			materiasAgregar = materiasAgregar.filter((materia) => {
-				return !materiasSeleccionadas.some((materiaSeleccionada) => {
-					return materia == materiaSeleccionada;
+				let materiasAgregar = todasLasMaterias.filter((materia) => {
+					return materia.nombre === materiaNombre;
 				});
-			});
 
-			materiasSeleccionadas.push(...materiasAgregar);
-		},
+				materiasAgregar = materiasAgregar.filter((materia) => {
+					return !materiasSeleccionadas.some((materiaSeleccionada) => {
+						return materia == materiaSeleccionada;
+					});
+				});
+
+				materiasSeleccionadas.push(...materiasAgregar);
+			},
 			eliminar: (materiaNombre: string) => {
 				console.log("Eliminar por materia: ", materiaNombre);
 
@@ -97,27 +98,27 @@
 				return [];
 			},
 			agregar: (profesorNombre: string) => {
-			console.log("Agregar por profesor: ", profesorNombre);
+				console.log("Agregar por profesor: ", profesorNombre);
 
-			let materiasAgregar = todasLasMaterias.filter((materia) => {
-				return materia.profesor === profesorNombre;
-			});
-
-			materiasAgregar = materiasAgregar.filter((materia) => {
-				return !materiasSeleccionadas.some((materiaSeleccionada) => {
-					return materia == materiaSeleccionada;
+				let materiasAgregar = todasLasMaterias.filter((materia) => {
+					return materia.profesor === profesorNombre;
 				});
-			});
 
-			materiasSeleccionadas.push(...materiasAgregar);
-		},
+				materiasAgregar = materiasAgregar.filter((materia) => {
+					return !materiasSeleccionadas.some((materiaSeleccionada) => {
+						return materia == materiaSeleccionada;
+					});
+				});
+
+				materiasSeleccionadas.push(...materiasAgregar);
+			},
 			eliminar: (profesorNombre: string) => {
-			console.log("Eliminar por profesor: ", profesorNombre);
+				console.log("Eliminar por profesor: ", profesorNombre);
 
-			materiasSeleccionadas = materiasSeleccionadas.filter((materia) => {
-				return materia.profesor !== profesorNombre;
-			});
-		},
+				materiasSeleccionadas = materiasSeleccionadas.filter((materia) => {
+					return materia.profesor !== profesorNombre;
+				});
+			},
 		},
 		"Por horario (no disponible)": {
 			selector: () => [],
@@ -167,6 +168,29 @@
 		modosSeleccion[modoSeleccion].selector();
 	});
 	let visible = $state(true);
+	/**
+	 * Cuando se hace click en un elemento del selector, se abre el detalle de ese elemento
+	 */
+	let seleccionMenuExpandido: string = $state("");
+	$effect(() => {
+		if (seleccionMenuExpandido === "") {
+			return;
+		}
+		const offset = document.getElementById(
+			"selector-" + seleccionMenuExpandido
+		)?.offsetTop;
+		const selector = document.getElementById("selector-materias");
+		const offsetInicial: number | undefined = (selector?.childNodes[0] as any)
+			?.offsetTop;
+
+		if (offset === undefined || offsetInicial === undefined)
+			throw new Error("No hay nada en el selector");
+
+		selector?.scrollTo({
+			behavior: "smooth",
+			top: offset - offsetInicial,
+		});
+	});
 </script>
 
 <aside
@@ -261,24 +285,68 @@
 			{/each}
 		</Dropdown>
 	</div>
-	<ul class="h-[calc(100%-2.75rem)] overflow-y-auto p-1 peer-not-checked:hidden">
+	<ul
+		class="h-[calc(100%-2.75rem)] overflow-y-auto p-1 peer-not-checked:hidden"
+		id="selector-materias"
+	>
 		{#each modosSeleccion[modoSeleccion].selector() as seleccionable}
 			<li
-				class="text-start min-h-12 flex flex-row gap-2 items-center justify-between"
+				class="text-start min-h-12 flex flex-col"
+				id={"selector-" + seleccionable}
 			>
-				<div class=" break-words hyphens-auto text-wrap px-2">
-					{seleccionable}
-				</div>
-				<div class="w-[100px] h-full p-2 flex flex-row gap-1">
-					<Agregar
+				<div class="flex flex-row w-full items-center justify-between gap-2">
+					<button
+						class="w-[30px] h-full flex flex-row nostyle ml-0.5"
+						onclick={() =>
+							(seleccionMenuExpandido =
+								seleccionMenuExpandido === seleccionable ? "" : seleccionable)}
+					>
+						{#if seleccionMenuExpandido === seleccionable}
+							<FlechaDropdown orientacion="abajo" styleClass="w-full" />
+						{:else}
+							<FlechaDropdown orientacion="derecha" styleClass="w-full" />
+						{/if}
+					</button>
+					<div class="w-full break-words hyphens-auto text-wrap px-2">
+						{seleccionable}
+					</div>
+					<div class="w-[100px] h-full p-2 flex flex-row gap-1">
+						<Agregar
 							click={modosSeleccion[modoSeleccion].agregar}
 							nombre={seleccionable}
-					/>
-					<Eliminar
+						/>
+						<Eliminar
 							click={modosSeleccion[modoSeleccion].eliminar}
 							nombre={seleccionable}
-					/>
+						/>
+					</div>
 				</div>
+				{#if seleccionMenuExpandido === seleccionable}
+					<ul class="flex flex-col w-full h-auto">
+						{#each modosSeleccion[modoSeleccion].menuDetalle(seleccionable) as detalle}
+							<li class="text-start min-h-12 flex flex-row">
+								<div
+									class="flex flex-row w-full items-center justify-between gap-2"
+								>
+									<div class="w-[50px] h-full p-2 flex flex-row gap-1"></div>
+									<div class=" break-words hyphens-auto text-wrap px-2 w-full">
+										{detalle.nombre}
+									</div>
+									<div class="w-[100px] h-full p-2 flex flex-row gap-1">
+										<Agregar
+											click={agregarMateriaPorId}
+											nombre={detalle.idMateria}
+										/>
+										<Eliminar
+											click={eliminarMateriaPorId}
+											nombre={detalle.idMateria}
+										/>
+									</div>
+								</div>
+							</li>
+						{/each}
+					</ul>
+				{/if}
 			</li>
 		{/each}
 	</ul>
@@ -308,5 +376,10 @@
 	ul {
 		list-style-type: none;
 		padding: 0;
+	}
+
+	button.nostyle:focus {
+		background-color: transparent;
+		outline: 0;
 	}
 </style>
