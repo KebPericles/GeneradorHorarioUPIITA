@@ -211,58 +211,9 @@
 			onclick={() => (visible = !visible)}
 		>
 			{#if visible}
-				<svg
-					class="h-full w-auto"
-					fill="#ffffff"
-					version="1.1"
-					xmlns="http://www.w3.org/2000/svg"
-					xmlns:xlink="http://www.w3.org/1999/xlink"
-					viewBox="0 0 512.01 512.01"
-					xml:space="preserve"
-					stroke="#ffffff"
-					stroke-width="0.00512006"
-					><g stroke-width="0"></g><g
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke="#CCCCCC"
-						stroke-width="2.048024"
-					></g><g>
-						<g>
-							<g>
-								<path
-									d="M388.419,475.59L168.834,256.005L388.418,36.421c8.341-8.341,8.341-21.824,0-30.165s-21.824-8.341-30.165,0 L123.586,240.923c-8.341,8.341-8.341,21.824,0,30.165l234.667,234.667c4.16,4.16,9.621,6.251,15.083,6.251 c5.461,0,10.923-2.091,15.083-6.251C396.76,497.414,396.76,483.931,388.419,475.59z"
-								></path>
-							</g>
-						</g>
-					</g></svg
-				>
+				<FlechaDropdown orientacion="izquierda"></FlechaDropdown>
 			{:else}
-				<svg
-					class="h-full w-auto"
-					fill="#ffffff"
-					version="1.1"
-					xmlns="http://www.w3.org/2000/svg"
-					xmlns:xlink="http://www.w3.org/1999/xlink"
-					viewBox="0 0 512.01 512.01"
-					xml:space="preserve"
-					stroke="#ffffff"
-					stroke-width="0.00512006"
-					transform="matrix(-1, 0, 0, 1, 0, 0)"
-					><g stroke-width="0"></g><g
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke="#CCCCCC"
-						stroke-width="2.048024"
-					></g><g>
-						<g>
-							<g>
-								<path
-									d="M388.419,475.59L168.834,256.005L388.418,36.421c8.341-8.341,8.341-21.824,0-30.165s-21.824-8.341-30.165,0 L123.586,240.923c-8.341,8.341-8.341,21.824,0,30.165l234.667,234.667c4.16,4.16,9.621,6.251,15.083,6.251 c5.461,0,10.923-2.091,15.083-6.251C396.76,497.414,396.76,483.931,388.419,475.59z"
-								></path>
-							</g>
-						</g>
-					</g></svg
-				>
+				<FlechaDropdown orientacion="derecha"></FlechaDropdown>
 			{/if}
 		</button>
 	</div>
@@ -286,15 +237,15 @@
 		</Dropdown>
 	</div>
 	<ul
-		class="h-[calc(100%-2.75rem)] overflow-y-auto p-1 peer-not-checked:hidden"
+		class="block h-[calc(100%-2.75rem)] overflow-y-auto p-1 peer-not-checked:hidden"
 		id="selector-materias"
 	>
 		{#each modosSeleccion[modoSeleccion].selector() as seleccionable}
 			<li
-				class="text-start min-h-12 flex flex-col"
+				class="text-start min-h-12 flex flex-col my-1 border-b-2 border-solid last:border-b-0 gradiente"
 				id={"selector-" + seleccionable}
 			>
-				<div class="flex flex-row w-full items-center justify-between gap-2">
+				<div class="flex flex-row w-full items-center justify-between gap-2 h-auto">
 					<button
 						class="w-[30px] h-full flex flex-row nostyle ml-0.5"
 						onclick={() =>
@@ -381,5 +332,15 @@
 	button.nostyle:focus {
 		background-color: transparent;
 		outline: 0;
+	}
+
+	.gradiente {
+		border-image-source: linear-gradient(
+			to right,
+			transparent 0%,
+			rgba(255, 255, 255, 0.7) 50%,
+			transparent 100%
+		) ;
+		border-image-slice: 1;
 	}
 </style>

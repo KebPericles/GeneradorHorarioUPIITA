@@ -25,7 +25,7 @@
 	});
 </script>
 
-<article class="not-md:w-[100%] md:w-full flex overflow-y-auto">
+<article class="not-md:w-[100%] md:w-full not-md:h-[60svh] flex overflow-y-auto">
 	{#if materiasSeleccionadas.length > 0}
 		<ul class="block w-full" id="lista-materias">
 			{#each materiasSeleccionadas as materia}

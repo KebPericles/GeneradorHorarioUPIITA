@@ -124,15 +124,15 @@
 	};
 </script>
 
-<div class="calendario w-full h-full bg-gray-50 dark:bg-gray-700 rounded-4xl">
+<div class="calendario w-full h-full bg-gray-400 dark:bg-gray-500">
 	<ul class="flex flex-row w-full h-[8svh]">
-		<li class="w-full h-full bg-gray-100 dark:bg-gray-800">Horas</li>
+		<li class="w-1/2 h-full bg-gray-100 dark:bg-gray-800 content-center border-r-2 border-solid border-gray-700 dark:border-gray-400 text-xl">Horas</li>
 		{#each Object.keys(Dia).filter((v) => isNaN(Number(v))) as dia}
-			<li class="w-full h-full bg-gray-200 dark:bg-gray-700">{dia}</li>
+			<li class="w-full h-full text-xl bg-gray-200 dark:bg-gray-700 content-center border-r-2 last:border-r-0 border-solid border-gray-300 dark:border-gray-400">{dia}</li>
 		{/each}
 	</ul>
 	<ul class="flex flex-row w-full max-h-[80svh]">
-		<li class="w-full flex flex-col">
+		<li class="w-1/2 flex flex-col border-r-2 border-solid border-gray-300 dark:border-gray-400">
 			{#each horasTemporal as hora}
 				<div class="w-full h-[7svh] bg-gray-100 dark:bg-gray-800">
 					{hora.toString({ smallestUnit: "minute" })}
@@ -140,7 +140,7 @@
 			{/each}
 		</li>
 		{#each Object.keys(eventosSemana) as dia}
-			<li class="w-full bg-gray-200 relative top-0 bottom-0">
+			<li class="w-full  relative top-0 bottom-0 border-r-2 last:border-r-0 border-solid border-gray-300 dark:border-gray-400">
 				{#each eventosSemana[dia] as evento}
 					<div
 						class="w-full bg-gray-100 dark:bg-gray-800 absolute z-10"
