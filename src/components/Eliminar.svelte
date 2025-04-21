@@ -1,25 +1,20 @@
 <script lang="ts">
-        interface Props {
-                click: (materiaNombre: string) => void;
-                materiaNombre: string;
-        }
-        let { click, materiaNombre } = $props();
+	interface Props {
+		click: (nombre: string) => void;
+		nombre: string;
+	}
+	let { click, nombre }: Props = $props();
 </script>
 
 <button
 	aria-label="Eliminar"
 	class="w-[50px] p-0! ratio-1x1 center flex justify-center items-center"
-        onclick={() => click(materiaNombre)}
+	onclick={() => click(nombre)}
 >
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 24 24"
-		fill="none"
-	>
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
 		<path
 			d="M17 12C17 11.4477 16.5523 11 16 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44771 13 8 13H16C16.5523 13 17 12.5523 17 12Z"
 			fill="#ffffff"
 		/>
-		
 	</svg>
 </button>

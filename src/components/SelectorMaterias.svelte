@@ -25,18 +25,50 @@
 		obtenerProfesores(todasLasMaterias).values().toArray()
 	);
 
-	const modosSeleccion: Record<string, () => any[]> = {
-		"Por materia": () => {
-			return nombresDeMaterias;
-		},
-		"Por grupo (no disponible)": () => [],
-		"Por profesor": () => {
-			return profesores;
-		},
-		"Por horario (no disponible)": () => [],
-	};
-	const agregarClick: Record<string, (materiaNombre: string) => void> = {
-		"Por materia": (materiaNombre: string) => {
+	/**
+	 * Proxy para el menú de detalle de un elemento seleccionable
+	 */
+	interface elementoDetalle {
+		/**
+		 * Nombre a mostrar en el menú de detalle
+		 */
+		nombre: string;
+		/**
+		 * Id de la materia para agregarla
+		 */
+		idMateria: string;
+	}
+	interface ModoSeleccion {
+		/**
+		 * Determina los nombres de los elementos seleccionables, dado el modo de seleccion
+		 */
+		selector: () => string[];
+		/**
+		 * Determina los elementos que se mostraran en el menu de detalle de un elemento, dado el modo de seleccion.
+		 *
+		 */
+		menuDetalle: (nombre: string) => elementoDetalle[];
+		/**
+		 * Determina el evento de click en agregar en el selector de elementos, dado el modo de seleccion
+		 */
+		agregar: (nombre: string) => void;
+		/**
+		 * Determina el evento de click en eliminar en el selector de elementos, dado el modo de seleccion
+		 */
+		eliminar: (nombre: string) => void;
+	}
+
+	const modosSeleccion: Record<string, ModoSeleccion> = {
+		"Por materia": {
+			selector: () => nombresDeMaterias,
+			menuDetalle: (materiaNombre: string) => {
+				return todasLasMaterias
+					.filter((materia) => materia.nombre === materiaNombre)
+					.map((materia) => {
+						return { nombre: materia.profesor, idMateria: materia.id };
+					});
+			},
+			agregar: (materiaNombre: string) => {
 			console.log("Agregar por materia: ", materiaNombre);
 
 			let materiasAgregar = todasLasMaterias.filter((materia) => {
@@ -51,7 +83,20 @@
 
 			materiasSeleccionadas.push(...materiasAgregar);
 		},
-		"Por profesor": (profesorNombre: string) => {
+			eliminar: (materiaNombre: string) => {
+				console.log("Eliminar por materia: ", materiaNombre);
+
+				materiasSeleccionadas = materiasSeleccionadas.filter((materia) => {
+					return materia.nombre !== materiaNombre;
+				});
+			},
+		},
+		"Por profesor": {
+			selector: () => profesores,
+			menuDetalle: (profesorNombre: string) => {
+				return [];
+			},
+			agregar: (profesorNombre: string) => {
 			console.log("Agregar por profesor: ", profesorNombre);
 
 			let materiasAgregar = todasLasMaterias.filter((materia) => {
@@ -66,23 +111,51 @@
 
 			materiasSeleccionadas.push(...materiasAgregar);
 		},
-	};
-
-	const eliminarClick: Record<string, (materiaNombre: string) => void> = {
-		"Por materia": (materiaNombre: string) => {
-			console.log("Eliminar por materia: ", materiaNombre);
-
-			materiasSeleccionadas = materiasSeleccionadas.filter((materia) => {
-				return materia.nombre !== materiaNombre;
-			});
-		},
-		"Por profesor": (profesorNombre: string) => {
+			eliminar: (profesorNombre: string) => {
 			console.log("Eliminar por profesor: ", profesorNombre);
 
 			materiasSeleccionadas = materiasSeleccionadas.filter((materia) => {
 				return materia.profesor !== profesorNombre;
 			});
 		},
+		},
+		"Por horario (no disponible)": {
+			selector: () => [],
+			menuDetalle: (horario: string) => {
+				return [];
+			},
+			agregar: (horario: string) => {
+				console.log("Agregar por horario: ", horario);
+			},
+			eliminar: (horario: string) => {
+				console.log("Eliminar por horario: ", horario);
+			},
+		},
+		"Por grupo (no disponible)": {
+			selector: () => [],
+			menuDetalle: (grupo: string) => {
+				return [];
+			},
+			agregar: (grupo: string) => {
+				console.log("Agregar por grupo: ", grupo);
+			},
+			eliminar: (grupo: string) => {
+				console.log("Eliminar por grupo: ", grupo);
+			},
+		},
+	};
+
+	const agregarMateriaPorId = (idMateria: string) => {
+		let materia = todasLasMaterias.find((materia) => materia.id === idMateria);
+		if (!materia) throw new Error("No se encontró la materia con ese id");
+		if (materiasSeleccionadas.some((materia) => materia.id === idMateria))
+			return; // La materia ya está seleccionada
+		materiasSeleccionadas.push(materia);
+	};
+	const eliminarMateriaPorId = (idMateria: string) => {
+		materiasSeleccionadas = materiasSeleccionadas.filter(
+			(materia) => materia.id !== idMateria
+		);
 	};
 
 	let modoSeleccion: string = $state("Por materia");
@@ -91,7 +164,7 @@
 		"text-green-500 dark:text-green-300 hover:text-green-700 dark:hover:text-green-500";
 
 	$effect(() => {
-		modosSeleccion[modoSeleccion]();
+		modosSeleccion[modoSeleccion].selector();
 	});
 	let visible = $state(true);
 </script>
@@ -189,7 +262,7 @@
 		</Dropdown>
 	</div>
 	<ul class="h-[calc(100%-2.75rem)] overflow-y-auto p-1 peer-not-checked:hidden">
-		{#each modosSeleccion[modoSeleccion]() as seleccionable}
+		{#each modosSeleccion[modoSeleccion].selector() as seleccionable}
 			<li
 				class="text-start min-h-12 flex flex-row gap-2 items-center justify-between"
 			>
@@ -198,12 +271,12 @@
 				</div>
 				<div class="w-[100px] h-full p-2 flex flex-row gap-1">
 					<Agregar
-						click={agregarClick[modoSeleccion]}
-						materiaNombre={seleccionable}
+							click={modosSeleccion[modoSeleccion].agregar}
+							nombre={seleccionable}
 					/>
 					<Eliminar
-						click={eliminarClick[modoSeleccion]}
-						materiaNombre={seleccionable}
+							click={modosSeleccion[modoSeleccion].eliminar}
+							nombre={seleccionable}
 					/>
 				</div>
 			</li>
