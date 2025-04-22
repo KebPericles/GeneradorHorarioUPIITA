@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Materia } from "../lib/Materias";
+	import Eliminar from "./Eliminar.svelte";
 
 	interface Props {
 		materiasSeleccionadas: Materia[];
@@ -23,9 +24,17 @@
 			materiasSeleccionadas
 		) as Materia[];
 	});
+
+	const eliminarMateriaPorId = (idMateria: string) => {
+		materiasSeleccionadas = materiasSeleccionadas.filter(
+			(materia) => materia.id !== idMateria
+		);
+	};
 </script>
 
-<article class="not-md:w-[100%] md:w-full not-md:h-[60svh] flex overflow-y-auto">
+<article
+	class="not-md:w-[100%] md:w-full not-md:h-[60svh] flex overflow-y-auto"
+>
 	{#if materiasSeleccionadas.length > 0}
 		<ul class="block w-full" id="lista-materias">
 			{#each materiasSeleccionadas as materia}
@@ -40,6 +49,10 @@
 					</div>
 					<div class="w-[calc((100%-5rem)/2)] content-center">
 						{materia.profesor}
+					</div>
+					<div class="w-8 content-center">
+						<Eliminar click={eliminarMateriaPorId} nombre={materia.id}
+						></Eliminar>
 					</div>
 				</li>
 			{/each}

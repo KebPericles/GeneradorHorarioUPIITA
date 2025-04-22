@@ -37,7 +37,7 @@ import SelectorMaterias from "./components/SelectorMaterias.svelte";
 		{todasLasMaterias}
 		bind:materiasSeleccionadas
 	/>
-	<ListaMaterias {materiasSeleccionadas} />
+	<ListaMaterias bind:materiasSeleccionadas />
 </div>
 <VisualizadorHorario {horariosPosibles} {cantidadDeMateriasSeleccionadas} />
 
