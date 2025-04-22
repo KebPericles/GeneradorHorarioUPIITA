@@ -1,5 +1,5 @@
 # Generador de horario UPIITA
-
+[![Deploy to GitHub Pages](https://github.com/KebPericles/GeneradorHorarioUPIITA/actions/workflows/deploy.yml/badge.svg)](https://github.com/KebPericles/GeneradorHorarioUPIITA/actions/workflows/deploy.yml)
 ## Créditos
 
 - Wilpan: ayuda con la lógica
