@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 html {
 	font-size: 2.5svh;
@@ -9,12 +9,12 @@ html {
  * Extraído de https://github.com/cosbgn/tailwindcss-tooltips
  **/
 .tooltip {
-	@apply not-md:hidden invisible opacity-0 transition-[opacity] ease-out duration-500;
+	@apply invisible opacity-0 transition-[opacity] duration-500 ease-out not-md:hidden;
 }
 
 .has-tooltip:hover .tooltip,
 .has-tooltip:hover + .tooltip {
-	@apply md:visible opacity-100 z-50;
+	@apply z-50 opacity-100 md:visible;
 }
 
 /**

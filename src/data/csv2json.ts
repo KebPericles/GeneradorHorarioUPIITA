@@ -1,7 +1,7 @@
-import { Dia, Materia } from "../lib/Materias";
-import type { Clase } from "../lib/Materias";
-import Papa from "papaparse";
-import fs from "fs";
+import { Dia, Materia } from '../lib/Materias';
+import type { Clase } from '../lib/Materias';
+import Papa from 'papaparse';
+import fs from 'fs';
 
 /**
  *
@@ -34,10 +34,7 @@ const claseHandler = (element: string, dia: Dia) => {
 	return clase;
 };
 
-const csvColumnHandler: Record<
-	string,
-	(materia: Materia, element: string) => void
-> = {
+const csvColumnHandler: Record<string, (materia: Materia, element: string) => void> = {
 	Grupo: (materia: Materia, element: string) => {
 		materia.grupo = element;
 	},
@@ -58,7 +55,7 @@ const csvColumnHandler: Record<
 		materia.horario.push(clase);
 	},
 	Mié: (materia: Materia, element: string) => {
-		let clase = claseHandler(element, Dia.Miercoles);
+		let clase = claseHandler(element, Dia.Miércoles);
 		if (clase === null) return;
 		materia.horario.push(clase);
 	},
@@ -71,34 +68,34 @@ const csvColumnHandler: Record<
 		let clase = claseHandler(element, Dia.Viernes);
 		if (clase === null) return;
 		materia.horario.push(clase);
-	},
+	}
 };
 
 const main = () => {
 	// Argumentos de entrada
 	if (process.argv.length < 3) {
-		console.log("Uso: pnpm run csv2json ciclo_escolar");
-		console.log("Ejemplo: pnpm run csv2json 2019-1");
+		console.log('Uso: pnpm run csv2json ciclo_escolar');
+		console.log('Ejemplo: pnpm run csv2json 2019-1');
 		process.exit(1);
 	}
 	const ciclo_escolar = process.argv[2];
 
-	const inputFileName = "src/data/csv/" + ciclo_escolar + ".csv";
-	const outputFileName = "public/data/json/" + ciclo_escolar + ".json";
+	const inputFileName = 'src/data/csv/' + ciclo_escolar + '.csv';
+	const outputFileName = 'static/data/json/' + ciclo_escolar + '.json';
 
 	// Preparación de datos
 	const todasLasMaterias: Materia[] = [];
-	const inputFileString = fs.readFileSync(inputFileName, "utf8");
+	const inputFileString = fs.readFileSync(inputFileName, 'utf8');
 	let csvData = Papa.parse(inputFileString, {
-		header: true,
+		header: true
 	});
 
 	if (csvData.data.length === 0) {
-		console.log("No hay datos");
+		console.log('No hay datos');
 		process.exit(1);
 	}
 	if (!csvData.meta.fields) {
-		console.log("No hay campos");
+		console.log('No hay campos');
 		process.exit(1);
 	}
 
@@ -121,8 +118,8 @@ const main = () => {
 	}
 
 	// Guardar datos
-	fs.mkdirSync(outputFileName.substring(0, outputFileName.lastIndexOf("/")), {
-		recursive: true,
+	fs.mkdirSync(outputFileName.substring(0, outputFileName.lastIndexOf('/')), {
+		recursive: true
 	});
 	fs.writeFileSync(outputFileName, JSON.stringify(todasLasMaterias));
 };

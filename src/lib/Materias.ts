@@ -1,4 +1,4 @@
-import { Color, ColoresUwU } from "./Color";
+import { Color, ColoresUwU } from './Color';
 
 export enum Dia {
 	Lunes,
@@ -6,7 +6,7 @@ export enum Dia {
 	Miércoles,
 	Jueves,
 	Viernes,
-	Sábado,
+	Sábado
 }
 
 export const HORA_REGEX = /(\d{2}):(\d{2})/;
@@ -36,7 +36,7 @@ export type Clase = {
 };
 
 export function eliminarDiacriticos(texto: string) {
-	return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+	return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 export type MateriaOptions = {
@@ -48,18 +48,18 @@ export type MateriaOptions = {
 };
 
 export class Materia {
-	private _abreviacionNombre: string = "";
-	private _nombre: string = "";
-	grupo: string = "";
-	profesor: string = "";
+	private _abreviacionNombre: string = '';
+	private _nombre: string = '';
+	grupo: string = '';
+	profesor: string = '';
 	horario: Clase[] = [];
 	color: Color = new Color();
 
 	constructor(options?: MateriaOptions) {
 		if (options) {
-			this.nombre = options.nombre ?? "";
-			this.grupo = options.grupo ?? "";
-			this.profesor = options.profesor ?? "";
+			this.nombre = options.nombre ?? '';
+			this.grupo = options.grupo ?? '';
+			this.profesor = options.profesor ?? '';
 			this.horario = options.horario ?? [];
 			this.color = options.color !== undefined ? ColoresUwU[options.color] : ColoresUwU[0]; // TODO: test options.color nunca null
 		}
@@ -75,67 +75,65 @@ export class Materia {
 
 	set nombre(nombre: string) {
 		this._nombre = nombre;
-		this._abreviacionNombre = "";
+		this._abreviacionNombre = '';
 	}
 
 	get abreviacionNombre() {
-		if (this._abreviacionNombre !== "") {
+		if (this._abreviacionNombre !== '') {
 			return this._abreviacionNombre;
 		}
 
 		if (!this._nombre) {
-			return "";
+			return '';
 		}
-		let abreviacion = "";
-		let palabras = this._nombre.split(" ");
+		let abreviacion = '';
+		let palabras = this._nombre.split(' ');
 
 		const filtro = [
-			"de",
-			"los",
-			"las",
-			"la",
-			"el",
-			"y",
-			"a",
-			"con",
-			"en",
-			"del",
-			"para",
-			"por",
-			"al",
-			"lo",
-			"un",
-			"una",
-			"unos",
-			"unas",
-			"o",
-			"e",
-			"ante",
-			"bajo",
-			"cabe",
-			"contra",
-			"de",
-			"desde",
-			"durante",
-			"en",
-			"entre",
-			"hacia",
-			"hasta",
-			"mediante",
-			"para",
-			"por",
-			"según",
-			"sin",
-			"so",
-			"sobre",
-			"tras",
-			"versus",
-			"vía",
+			'de',
+			'los',
+			'las',
+			'la',
+			'el',
+			'y',
+			'a',
+			'con',
+			'en',
+			'del',
+			'para',
+			'por',
+			'al',
+			'lo',
+			'un',
+			'una',
+			'unos',
+			'unas',
+			'o',
+			'e',
+			'ante',
+			'bajo',
+			'cabe',
+			'contra',
+			'de',
+			'desde',
+			'durante',
+			'en',
+			'entre',
+			'hacia',
+			'hasta',
+			'mediante',
+			'para',
+			'por',
+			'según',
+			'sin',
+			'so',
+			'sobre',
+			'tras',
+			'versus',
+			'vía'
 		];
 
-		palabras = palabras.filter(
-			(palabra) => !filtro.includes(palabra.toLowerCase())
-		);
+		palabras = palabras.filter((palabra) => !filtro.includes(palabra.toLowerCase()));
 
 		for (const element of palabras) {
 			abreviacion += element[0];
@@ -149,11 +147,11 @@ export class Materia {
 	}
 
 	get estaVacia() {
-		if (this.abreviacionNombre === "") return true;
+		if (this.abreviacionNombre === '') return true;
 		if (this.horario.length === 0) return true;
-		if (this.grupo === "") return true;
-		if (this.nombre === "") return true;
-		if (this.profesor === "") return true;
+		if (this.grupo === '') return true;
+		if (this.nombre === '') return true;
+		if (this.profesor === '') return true;
 		return false;
 	}
 
@@ -168,7 +166,7 @@ export const materiaFromJSON = (json: string) => {
 		nombre: materiaJson._nombre,
 		grupo: materiaJson.grupo,
 		profesor: materiaJson.profesor,
-		horario: materiaJson.horario,
+		horario: materiaJson.horario
 	});
 };
 
@@ -182,7 +180,7 @@ export const materiasFromJSON = (json: string) => {
 				grupo: materia.grupo,
 				profesor: materia.profesor,
 				horario: materia.horario,
-				color: Math.round(Math.random() * 10),
+				color: Math.round(Math.random() * 10)
 			})
 		);
 	}

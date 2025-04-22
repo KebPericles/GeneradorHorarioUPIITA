@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20]
+        node-version: [22]
     steps:
       - uses: actions/checkout@v4
       - name: Install pnpm
@@ -27,8 +27,8 @@ jobs:
           pnpm build
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
-        with:          # this should match the `pages` option in your adapter-static options
-          path: 'dist/'
+        with: # this should match the `pages` option in your adapter-static options
+          path: 'build/'
   deploy:
     needs: build_site
     runs-on: ubuntu-latest

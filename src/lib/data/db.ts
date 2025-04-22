@@ -1,16 +1,9 @@
-import {
-	HORA_REGEX,
-	materiasFromJSON,
-	type Clase,
-	type Materia,
-} from "../Materias";
+import { HORA_REGEX, materiasFromJSON, type Clase, type Materia } from '../Materias';
 
 export const obtenerTodasLasMaterias = async (cicloEscolar: string) => {
 	let todasLasMaterias: Materia[];
 
-	let materiasString = await (
-		await fetch(`/data/json/${cicloEscolar}.json`)
-	).text();
+	let materiasString = await (await fetch(`/data/json/${cicloEscolar}.json`)).text();
 	todasLasMaterias = materiasFromJSON(materiasString);
 
 	return todasLasMaterias;
@@ -51,13 +44,11 @@ export const crearCombinaciones = (materiasSeleccionadas: Materia[]) => {
 		let matchFin2 = clase2.horaFin.match(HORA_REGEX);
 
 		if (matchInicio1 === null)
-			throw new Error("La hora de inicio de la clase 1 no es una hora válida");
-		if (matchFin1 === null)
-			throw new Error("La hora de fin de la clase 1 no es una hora válida");
+			throw new Error('La hora de inicio de la clase 1 no es una hora válida');
+		if (matchFin1 === null) throw new Error('La hora de fin de la clase 1 no es una hora válida');
 		if (matchInicio2 === null)
-			throw new Error("La hora de inicio de la clase 2 no es una hora válida");
-		if (matchFin2 === null)
-			throw new Error("La hora de fin de la clase 2 no es una hora válida");
+			throw new Error('La hora de inicio de la clase 2 no es una hora válida');
+		if (matchFin2 === null) throw new Error('La hora de fin de la clase 2 no es una hora válida');
 
 		let clase1Inicio = Number(matchInicio1[1]) + Number(matchInicio1[2]) / 60;
 		let clase1Fin = Number(matchFin1[1]) + Number(matchFin1[2]) / 60;
@@ -97,8 +88,7 @@ export const crearCombinaciones = (materiasSeleccionadas: Materia[]) => {
 
 			for (let k = 0; k < horario.length && materiaValida; k++) {
 				const materiaRegistrada = horario[k];
-				materiaValida =
-					materiaValida && !chocanHorario(materia, materiaRegistrada);
+				materiaValida = materiaValida && !chocanHorario(materia, materiaRegistrada);
 			}
 
 			if (!materiaValida) continue;

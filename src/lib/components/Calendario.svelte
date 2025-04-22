@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Temporal } from "@js-temporal/polyfill";
-	import { Dia, Materia } from "../lib/Materias";
+	import { Temporal } from '@js-temporal/polyfill';
+	import { Dia, Materia } from '$lib/Materias';
 
 	interface Props {
 		intervaloMinutos: number;
@@ -29,7 +29,7 @@
 		let intervaloHoras = {
 			inicio: Temporal.PlainTime.from({ hour: 23, minute: 59 }),
 			fin: Temporal.PlainTime.from({ hour: 0, minute: 0 }),
-			duracion: Temporal.Duration.from({ hours: 24, minutes: 0 }),
+			duracion: Temporal.Duration.from({ hours: 24, minutes: 0 })
 		};
 
 		// Calcula la primer y última hora de los eventos introducidos
@@ -39,9 +39,7 @@
 				const inicioEvento = eventoDia.horaInicio;
 				const finEvento = eventoDia.horaFin;
 
-				if (
-					Temporal.PlainTime.compare(intervaloHoras.inicio, inicioEvento) > 0
-				) {
+				if (Temporal.PlainTime.compare(intervaloHoras.inicio, inicioEvento) > 0) {
 					intervaloHoras.inicio = inicioEvento;
 				}
 
@@ -51,9 +49,7 @@
 			}
 		}
 
-		if (
-			Temporal.PlainTime.compare(intervaloHoras.inicio, intervaloHoras.fin) >= 0
-		) {
+		if (Temporal.PlainTime.compare(intervaloHoras.inicio, intervaloHoras.fin) >= 0) {
 			intervaloHoras.inicio = Temporal.PlainTime.from({ hour: 7, minute: 0 });
 			intervaloHoras.fin = Temporal.PlainTime.from({ hour: 20, minute: 30 });
 		} else {
@@ -96,17 +92,15 @@
 		return `grid-area: ${indiceHora + 2} / 1 / ${indiceHora + 3} / 2;`;
 	};
 	const posicionDeEvento = (evento: Evento) => {
-		let posicionStyle = "";
+		let posicionStyle = '';
 
 		const horasDesdeInicio = intervaloHoras.inicio.until(evento.horaInicio);
 		const duracionEvento = evento.horaInicio.until(evento.horaFin);
 
 		const proporcionHoras =
-			horasDesdeInicio.total("minutes") /
-			intervaloHoras.duracion.total("minutes");
+			horasDesdeInicio.total('minutes') / intervaloHoras.duracion.total('minutes');
 		const proporcionDuracion =
-			duracionEvento.total("minutes") /
-			intervaloHoras.duracion.total("minutes");
+			duracionEvento.total('minutes') / intervaloHoras.duracion.total('minutes');
 
 		// TODO:
 		// BUG: Error de redondeo,
@@ -116,7 +110,7 @@
 		return posicionStyle;
 	};
 	const estiloEvento = (evento: Evento) => {
-		let estilo = "";
+		let estilo = '';
 		estilo += posicionDeEvento(evento);
 
 		// TODO: Colorear materias, aún no tengo algo claro, pero
@@ -139,7 +133,7 @@
 </script>
 
 <div
-	class="calendario w-full h-full bg-gray-400 dark:bg-gray-500"
+	class="calendario h-full w-full bg-gray-400 dark:bg-gray-500"
 	style="--dias-visibles:{diasVisibles.length};--horas-visibles:{horasTemporal.length};"
 >
 	<div class="encabezado horas" data-alttext="Hrs"><span>Horas</span></div>
@@ -155,37 +149,34 @@
 	{/if}
 
 	{#each horasTemporal as hora}
-		<div
-			class="w-full h-[7svh] bg-gray-100 dark:bg-gray-800 hora1"
-			style={posicionDeHora(hora)}
-		>
-			{hora.toString({ smallestUnit: "minute" })}
+		<div class="hora1 h-[7svh] w-full bg-gray-100 dark:bg-gray-800" style={posicionDeHora(hora)}>
+			{hora.toString({ smallestUnit: 'minute' })}
 		</div>
 	{/each}
 
 	<!--Columnas de días			-->
 	{#each diasVisibles as dia}
 		<div
-			class="w-full h-full content-center"
-			style="grid-area: 2 / {(dia as number) + 2} / {horasTemporal.length +
-				2} / {(dia as number) + 3};"
+			class="h-full w-full content-center"
+			style="grid-area: 2 / {(dia as number) + 2} / {horasTemporal.length + 2} / {(dia as number) +
+				3};"
 		>
-			<div class="relative w-full h-full">
-			{#each eventosSemana[dia] as evento}
-				<div
-					class="w-full bg-gray-100 dark:bg-gray-800 absolute z-10 p-0.5 content-center"
-					style="{estiloEvento(evento)} text-box: auto;"
-				>
-					{evento.nombre}
-				</div>
-			{/each}
+			<div class="relative h-full w-full">
+				{#each eventosSemana[dia] as evento}
+					<div
+						class="absolute z-10 w-full content-center bg-gray-100 p-0.5 dark:bg-gray-800"
+						style="{estiloEvento(evento)} text-box: auto;"
+					>
+						{evento.nombre}
+					</div>
+				{/each}
 			</div>
 		</div>
 	{/each}
 </div>
 
 <style>
-	@import "tailwindcss";
+	@import 'tailwindcss';
 	.calendario {
 		position: relative;
 		width: 100%;
@@ -193,11 +184,10 @@
 		display: grid;
 		grid-template-columns: 1fr repeat(var(--dias-visibles), 2fr);
 		grid-template-rows: 8svh repeat(var(--horas-visibles), 7svh);
-		
 	}
 
 	.calendario > .encabezado {
-		@apply bg-gray-100 dark:bg-gray-800 content-center text-xl;
+		@apply content-center bg-gray-100 text-xl dark:bg-gray-800;
 	}
 	.horas {
 		grid-area: 1 / 1 / 2 / 2;

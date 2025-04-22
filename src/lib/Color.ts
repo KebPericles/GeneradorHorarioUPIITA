@@ -105,13 +105,13 @@ export class Color {
 	 */
 	cssRGB(): string {
 		return (
-			"rgb(" +
+			'rgb(' +
 			Math.round(255 * this.r) +
-			"," +
+			',' +
 			Math.round(255 * this.g) +
-			"," +
+			',' +
 			Math.round(255 * this.b) +
-			")"
+			')'
 		);
 	}
 
@@ -230,13 +230,13 @@ export class Color {
 	 */
 	cssHSL(): string {
 		return (
-			"hsl(" +
+			'hsl(' +
 			Math.round(360 * this.h) +
-			"," +
+			',' +
 			Math.round(100 * this.s) +
-			"%," +
+			'%,' +
 			Math.round(100 * this.l) +
-			"%)"
+			'%)'
 		);
 	}
 
@@ -250,15 +250,15 @@ export class Color {
 	 */
 	cssHSLA(): string {
 		return (
-			"hsla(" +
+			'hsla(' +
 			Math.round(360 * this.h) +
-			"," +
+			',' +
 			Math.round(100 * this.s) +
-			"%," +
+			'%,' +
 			Math.round(100 * this.l) +
-			"%," +
+			'%,' +
 			Math.round(this.a) +
-			")"
+			')'
 		);
 	}
 
@@ -309,12 +309,12 @@ export class Color {
 	 */
 	cssHEX(): string {
 		return (
-			"#" +
-			(255 * this.r < 16 ? "0" : "") +
+			'#' +
+			(255 * this.r < 16 ? '0' : '') +
 			Math.round(255 * this.r).toString(16) +
-			(255 * this.g < 16 ? "0" : "") +
+			(255 * this.g < 16 ? '0' : '') +
 			Math.round(255 * this.g).toString(16) +
-			(255 * this.b < 16 ? "0" : "") +
+			(255 * this.b < 16 ? '0' : '') +
 			Math.round(255 * this.b).toString(16)
 		);
 	}
@@ -351,13 +351,9 @@ export class Color {
 	//   }
 	saturate(v: string | number): Color {
 		// if ("string" == typeof v && v.indexOf("%") > -1 && (v = parseInt(v)) != NaN) {
-		if (
-			"string" == typeof v &&
-			v.indexOf("%") > -1 &&
-			!Number.isNaN((v = parseInt(v)))
-		) {
+		if ('string' == typeof v && v.indexOf('%') > -1 && !Number.isNaN((v = parseInt(v)))) {
 			this.s += (1 - this.s) * (v / 100);
-		} else if ("number" == typeof v) {
+		} else if ('number' == typeof v) {
 			if (v >= -0.0 && v <= 1.0) {
 				// range 255
 				this.s += (1 - this.s) * v;
@@ -366,7 +362,7 @@ export class Color {
 				this.s += (1 - this.s) * (v / 255);
 			}
 		} else {
-			throw new Error("error: bad modifier format (percent or number)");
+			throw new Error('error: bad modifier format (percent or number)');
 		}
 		if (this.s > 1) this.s = 1;
 		else if (this.s < 0) this.s = 0;
@@ -375,13 +371,9 @@ export class Color {
 	}
 	desaturate(v: string | number): Color {
 		// if ("string" == typeof v && v.indexOf("%") > -1 && (v = parseInt(v)) != NaN) {
-		if (
-			"string" == typeof v &&
-			v.indexOf("%") > -1 &&
-			!Number.isNaN((v = parseInt(v)))
-		) {
+		if ('string' == typeof v && v.indexOf('%') > -1 && !Number.isNaN((v = parseInt(v)))) {
 			this.s -= v / 100;
-		} else if ("number" == typeof v) {
+		} else if ('number' == typeof v) {
 			if (v >= 0.0 && v <= 1.0) {
 				// range 255
 				this.s -= this.s * v;
@@ -390,7 +382,7 @@ export class Color {
 				this.s -= this.s * (v / 255);
 			}
 		} else {
-			throw new Error("error: bad modifier format (percent or number)");
+			throw new Error('error: bad modifier format (percent or number)');
 		}
 		if (this.s > 1) this.s = 1;
 		else if (this.s < 0) this.s = 0;
@@ -418,13 +410,9 @@ export class Color {
 	//   }
 	lighten(v: string | number): Color {
 		// if ("string" == typeof v && v.indexOf("%") > -1 && (v = parseInt(v)) != NaN) {
-		if (
-			"string" == typeof v &&
-			v.indexOf("%") > -1 &&
-			!Number.isNaN((v = parseInt(v)))
-		) {
+		if ('string' == typeof v && v.indexOf('%') > -1 && !Number.isNaN((v = parseInt(v)))) {
 			this.l += (1 - this.l) * (v / 100);
-		} else if ("number" == typeof v) {
+		} else if ('number' == typeof v) {
 			if (v >= 0.0 && v <= 1.0) {
 				// range 0.0...1.0
 				this.l += (1 - this.l) * v;
@@ -433,7 +421,7 @@ export class Color {
 				this.l += (1 - this.l) * (v / 255);
 			}
 		} else {
-			throw new Error("error: bad modifier format (percent or number)");
+			throw new Error('error: bad modifier format (percent or number)');
 		}
 		if (this.l > 1) this.l = 1;
 		else if (this.l < 0) this.l = 0;
@@ -442,13 +430,9 @@ export class Color {
 	}
 	darken(v: string | number): Color {
 		// if ("string" == typeof v && v.indexOf("%") > -1 && (v = parseInt(v)) != NaN) {
-		if (
-			"string" == typeof v &&
-			v.indexOf("%") > -1 &&
-			!Number.isNaN((v = parseInt(v)))
-		) {
+		if ('string' == typeof v && v.indexOf('%') > -1 && !Number.isNaN((v = parseInt(v)))) {
 			this.l -= this.l * (v / 100);
-		} else if ("number" == typeof v) {
+		} else if ('number' == typeof v) {
 			if (v >= 0.0 && v <= 1.0) {
 				// range 0.0...1.0
 				this.l -= this.l * v;
@@ -457,7 +441,7 @@ export class Color {
 				this.l -= this.l * (v / 255);
 			}
 		} else {
-			throw new Error("error: bad modifier format (percent or number)");
+			throw new Error('error: bad modifier format (percent or number)');
 		}
 		if (this.l > 1) this.l = 1;
 		else if (this.l < 0) this.l = 0;
@@ -466,13 +450,9 @@ export class Color {
 	}
 	fadein(v: string | number): Color {
 		// if ("string" == typeof v && v.indexOf("%") > -1 && (v = parseInt(v)) != NaN) {
-		if (
-			"string" == typeof v &&
-			v.indexOf("%") > -1 &&
-			!Number.isNaN((v = parseInt(v)))
-		) {
+		if ('string' == typeof v && v.indexOf('%') > -1 && !Number.isNaN((v = parseInt(v)))) {
 			this.a += (1 - this.a) * (v / 100);
-		} else if ("number" == typeof v) {
+		} else if ('number' == typeof v) {
 			if (v >= 0.0 && v <= 1.0) {
 				// range 0-1
 				this.a += (1 - this.a) * v;
@@ -481,9 +461,9 @@ export class Color {
 				this.a += (1 - this.a) * (v / 255);
 			}
 		} else {
-			throw new Error("error: bad modifier format (percent or number)");
+			throw new Error('error: bad modifier format (percent or number)');
 		}
-		console.log("New alpha", this.a);
+		console.log('New alpha', this.a);
 		if (this.a > 1) this.a = 1;
 		else if (this.a < 0) this.a = 0;
 		Color.Converter.HSLToRGB(this);
@@ -491,13 +471,9 @@ export class Color {
 	}
 	fadeout(v: string | number): Color {
 		// if ("string" == typeof v && v.indexOf("%") > -1 && (v = parseInt(v)) != NaN) {
-		if (
-			"string" == typeof v &&
-			v.indexOf("%") > -1 &&
-			!Number.isNaN((v = parseInt(v)))
-		) {
+		if ('string' == typeof v && v.indexOf('%') > -1 && !Number.isNaN((v = parseInt(v)))) {
 			this.a -= v / 100;
-		} else if ("number" == typeof v) {
+		} else if ('number' == typeof v) {
 			if (v >= 0.0 && v <= 1.0) {
 				// range 0-1
 				this.a -= v;
@@ -506,7 +482,7 @@ export class Color {
 				this.a -= v / 255;
 			}
 		} else {
-			throw new Error("error: bad modifier format (percent or number)");
+			throw new Error('error: bad modifier format (percent or number)');
 		}
 		if (this.a > 1) this.a = 1;
 		else if (this.a < 0) this.a = 0;
@@ -515,16 +491,12 @@ export class Color {
 	}
 	spin(v: string | number): Color {
 		// if ("string" == typeof v && v.indexOf("%") > -1 && (v = parseInt(v)) != NaN) this.h += v / 100;
-		if (
-			"string" == typeof v &&
-			v.indexOf("%") > -1 &&
-			!Number.isNaN((v = parseInt(v)))
-		) {
+		if ('string' == typeof v && v.indexOf('%') > -1 && !Number.isNaN((v = parseInt(v)))) {
 			this.h += v / 100;
-		} else if ("number" == typeof v) {
+		} else if ('number' == typeof v) {
 			// range 360
 			this.h += v / 360;
-		} else throw new Error("error: bad modifier format (percent or number)");
+		} else throw new Error('error: bad modifier format (percent or number)');
 		if (this.h > 1) this.h = 1;
 		else if (this.h < 0) this.h = 0;
 		Color.Converter.HSLToRGB(this);
@@ -534,8 +506,7 @@ export class Color {
 	static makeRGB(...args: any[]): Color {
 		const c: Color = new Color();
 		let sanitized: Array<number>;
-		if (arguments.length < 3 || arguments.length > 4)
-			throw new Error("error: 3 or 4 arguments");
+		if (arguments.length < 3 || arguments.length > 4) throw new Error('error: 3 or 4 arguments');
 		sanitized = Color.Sanitizer.RGB(arguments[0], arguments[1], arguments[2]);
 		c.r = sanitized[0];
 		c.g = sanitized[1];
@@ -552,8 +523,7 @@ export class Color {
 	static makeHSL(...args: Array<number | string>): Color {
 		const c: Color = new Color();
 		let sanitized: Array<number>;
-		if (arguments.length < 3 || arguments.length > 4)
-			throw new Error("error: 3 or 4 arguments");
+		if (arguments.length < 3 || arguments.length > 4) throw new Error('error: 3 or 4 arguments');
 		sanitized = Color.Sanitizer.HSL(arguments[0], arguments[1], arguments[2]);
 		c.h = sanitized[0];
 		c.s = sanitized[1];
@@ -569,7 +539,7 @@ export class Color {
 			sanitized;
 		// Edit Ika 2018-0308
 		// Allow leading '#'
-		if (value && value.startsWith("#")) value = value.substr(1);
+		if (value && value.startsWith('#')) value = value.substr(1);
 		Color.Validator.checkHEX(value);
 		if (value.length == 3) {
 			sanitized = Color.Sanitizer.RGB(
@@ -583,7 +553,7 @@ export class Color {
 				parseInt(value.substr(2, 2), 16),
 				parseInt(value.substr(4, 2), 16)
 			);
-		} else throw new Error("error: 3 or 6 arguments");
+		} else throw new Error('error: 3 or 6 arguments');
 		c.r = sanitized[0];
 		c.g = sanitized[1];
 		c.b = sanitized[2];
@@ -602,33 +572,29 @@ export class Color {
 	 * @return {Color} The color instance that's represented by the given string.
 	 */
 	static parse(str: string): Color | null {
-		if (typeof str == "undefined") {
+		if (typeof str == 'undefined') {
 			return null;
 		}
 		if ((str = str.trim().toLowerCase()).length == 0) {
 			return null;
 		}
-		if (str.startsWith("#")) return Color.makeHEX(str.substring(1, str.length));
-		if (str.startsWith("rgb")) {
+		if (str.startsWith('#')) return Color.makeHEX(str.substring(1, str.length));
+		if (str.startsWith('rgb')) {
 			var parts = str.match(
 				/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,?\s*(\d*(?:\.\d+\s*)?)\)$/
 			);
 			if (!parts) {
-				throw "Unrecognized color format (2): " + str;
+				throw 'Unrecognized color format (2): ' + str;
 			}
 			// [ str, r, g, b, a|undefined ]
 			//   console.log("parts", parts);
-			if (
-				parts.length <= 4 ||
-				typeof parts[4] == "undefined" ||
-				parts[4] == ""
-			) {
+			if (parts.length <= 4 || typeof parts[4] == 'undefined' || parts[4] == '') {
 				return Color.makeRGB(parts[1], parts[2], parts[3]);
 			} else {
 				return Color.makeRGB(parts[1], parts[2], parts[3], Number(parts[4]));
 			}
 		} else {
-			throw "Unrecognized color format (1): " + str;
+			throw 'Unrecognized color format (1): ' + str;
 		}
 	}
 
@@ -641,20 +607,20 @@ export class Color {
 			// const allAreFrac = Color.testFrac( arguments );
 			for (var i = 0; i < arguments.length; i++) {
 				var c = arguments[i];
-				if ("string" == typeof c && c.indexOf("%") > -1) {
+				if ('string' == typeof c && c.indexOf('%') > -1) {
 					// if ((c = parseInt(c)) == NaN) throw new Error("Bad format");
 					if (Number.isNaN((c = parseInt(c)))) {
-						throw new Error("Bad format");
+						throw new Error('Bad format');
 					}
-					if (c < 0 || c > 100) throw new Error("Bad format");
+					if (c < 0 || c > 100) throw new Error('Bad format');
 					o[i] = c / 100;
 				} else {
 					// if ("string" == typeof c && (c = parseInt(c)) == NaN) {
-					if ("string" == typeof c && Number.isNaN((c = parseInt(c)))) {
-						throw new Error("Bad format");
+					if ('string' == typeof c && Number.isNaN((c = parseInt(c)))) {
+						throw new Error('Bad format');
 					}
 					if (c < 0) {
-						throw new Error("Bad format");
+						throw new Error('Bad format');
 					}
 					//else if( allAreFrac ) o[i] = c; // c >= 0 && c <= 1 (all)
 					else if (c >= 0 && c < 1) {
@@ -666,7 +632,7 @@ export class Color {
 					}
 					// ???
 					// else if(c >= 0 && c < 256) o[i] = c/255;
-					else throw new Error("Bad format (" + c + ")");
+					else throw new Error('Bad format (' + c + ')');
 				}
 			}
 			return o;
@@ -674,38 +640,34 @@ export class Color {
 
 		HSL: function (...args: Array<string | number>): Array<number> {
 			if (arguments.length < 3 || arguments.length > 4)
-				throw new Error("3 or 4 arguments required");
+				throw new Error('3 or 4 arguments required');
 			var h = arguments[0],
 				s = arguments[1],
 				l = arguments[2];
 			// if ("string" == typeof h && (h = parseFloat(h)) == NaN) throw new Error("Bad format for hue");
-			if ("string" == typeof h && Number.isNaN((h = parseFloat(h)))) {
-				throw new Error("Bad format for hue");
+			if ('string' == typeof h && Number.isNaN((h = parseFloat(h)))) {
+				throw new Error('Bad format for hue');
 			}
-			if (h < 0 || h > 360) throw new Error("Hue out of range (0..360)");
-			else if (
-				(("" + h).indexOf(".") > -1 && h > 1) ||
-				("" + h).indexOf(".") == -1
-			)
-				h /= 360;
-			if ("string" == typeof s && s.indexOf("%") > -1) {
+			if (h < 0 || h > 360) throw new Error('Hue out of range (0..360)');
+			else if ((('' + h).indexOf('.') > -1 && h > 1) || ('' + h).indexOf('.') == -1) h /= 360;
+			if ('string' == typeof s && s.indexOf('%') > -1) {
 				// if ((s = parseInt(s)) == NaN) throw new Error("Bad format for saturation");
 				if (Number.isNaN((s = parseInt(s)))) {
-					throw new Error("Bad format for saturation");
+					throw new Error('Bad format for saturation');
 				}
-				if (s < 0 || s > 100) throw new Error("Bad format for saturation");
+				if (s < 0 || s > 100) throw new Error('Bad format for saturation');
 				s /= 100;
-			} else if (s < 0 || s > 1) throw new Error("Bad format for saturation");
-			if ("string" == typeof l && l.indexOf("%") > -1) {
+			} else if (s < 0 || s > 1) throw new Error('Bad format for saturation');
+			if ('string' == typeof l && l.indexOf('%') > -1) {
 				// if ((l = parseInt(l)) == NaN) throw new Error("Bad format for lightness");
 				if (Number.isNaN((l = parseInt(l)))) {
-					throw new Error("Bad format for lightness");
+					throw new Error('Bad format for lightness');
 				}
-				if (l < 0 || l > 100) throw new Error("Bad format for lightness");
+				if (l < 0 || l > 100) throw new Error('Bad format for lightness');
 				l /= 100;
-			} else if (l < 0 || l > 1) throw new Error("Bad format for lightness");
+			} else if (l < 0 || l > 1) throw new Error('Bad format for lightness');
 			return [h, s, l];
-		},
+		}
 	}; // ENd sanitizer
 
 	private static Validator = {
@@ -714,19 +676,15 @@ export class Color {
 		 */
 		checkHEX: (value: string) => {
 			if (value.length != 6 && value.length != 3)
-				throw new Error(
-					"Hexa color: bad length (" + value.length + ")," + value
-				);
+				throw new Error('Hexa color: bad length (' + value.length + '),' + value);
 			value = value.toLowerCase();
 			//for( var i in value ) {
 			for (var i = 0; i < value.length; i++) {
 				var c: number = value.charCodeAt(i);
 				if (!((c >= 48 && c <= 57) || (c >= 97 && c <= 102)))
-					throw new Error(
-						`Hexa color: out of range for "${value}" at position ${i}.`
-					);
+					throw new Error(`Hexa color: out of range for "${value}" at position ${i}.`);
 			}
-		},
+		}
 	};
 
 	private static Converter = {
@@ -790,7 +748,7 @@ export class Color {
 			if (t < 1 / 2) return q;
 			if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
 			return p;
-		},
+		}
 	};
 
 	/**
@@ -844,9 +802,7 @@ const colores_wil = [
 	[0, 19, 102],
 	[36, 0, 102],
 	[92, 0, 102],
-	[102, 0, 56],
+	[102, 0, 56]
 ];
 
-export const ColoresUwU = colores_wil.map((rgb) =>
-	Color.makeRGB(rgb[0], rgb[1], rgb[2])
-);
+export const ColoresUwU = colores_wil.map((rgb) => Color.makeRGB(rgb[0], rgb[1], rgb[2]));

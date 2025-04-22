@@ -1,18 +1,17 @@
 <script lang="ts">
 	interface Props {
-		orientacion: "izquierda" | "derecha" | "arriba" | "abajo";
+		orientacion: 'izquierda' | 'derecha' | 'arriba' | 'abajo';
 		styleClass?: string;
 	}
 
 	let { orientacion, styleClass }: Props = $props();
 
-        const rotacion = {
-                "izquierda": "rotate-0",
-                "derecha": "rotate-180",
-                "arriba": "rotate-90",
-                "abajo": "rotate-270"
-        }
-
+	const rotacion = {
+		izquierda: 'rotate-0',
+		derecha: 'rotate-180',
+		arriba: 'rotate-90',
+		abajo: 'rotate-270'
+	};
 </script>
 
 <svg
@@ -44,8 +43,8 @@
 >
 
 <style>
-        svg:active {
-                border: 0;
-                outline: 0;
-        }
+	svg:active {
+		border: 0;
+		outline: 0;
+	}
 </style>

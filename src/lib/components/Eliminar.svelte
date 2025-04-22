@@ -8,7 +8,7 @@
 
 <button
 	aria-label="Eliminar"
-	class="w-full p-0! ratio-1x1 center flex justify-center items-center"
+	class="ratio-1x1 center flex w-full items-center justify-center p-0!"
 	onclick={() => click(nombre)}
 >
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">

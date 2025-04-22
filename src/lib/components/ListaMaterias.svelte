@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Materia } from "../lib/Materias";
-	import Eliminar from "./Eliminar.svelte";
+	import type { Materia } from '$lib/Materias';
+	import Eliminar from './Eliminar.svelte';
 
 	interface Props {
 		materiasSeleccionadas: Materia[];
@@ -11,38 +11,30 @@
 
 	$effect(() => {
 		if (materiasSeleccionadas.length > materiasSeleccionadasAnterior.length) {
-			document
-				.getElementById("lista-materias")
-				?.lastElementChild?.scrollIntoView({
-					behavior: "smooth",
-					block: "end",
-					inline: "end",
-				});
+			document.getElementById('lista-materias')?.lastElementChild?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'end',
+				inline: 'end'
+			});
 		}
 
-		materiasSeleccionadasAnterior = $state.snapshot(
-			materiasSeleccionadas
-		) as Materia[];
+		materiasSeleccionadasAnterior = $state.snapshot(materiasSeleccionadas) as Materia[];
 	});
 
 	const eliminarMateriaPorId = (idMateria: string) => {
-		materiasSeleccionadas = materiasSeleccionadas.filter(
-			(materia) => materia.id !== idMateria
-		);
+		materiasSeleccionadas = materiasSeleccionadas.filter((materia) => materia.id !== idMateria);
 	};
 </script>
 
-<article
-	class="not-md:w-[100%] md:w-full not-md:h-[40svh] flex overflow-y-auto"
->
+<article class="flex overflow-y-auto not-md:h-[40svh] not-md:w-[100%] md:w-full">
 	{#if materiasSeleccionadas.length > 0}
 		<ul class="block w-full" id="lista-materias">
 			{#each materiasSeleccionadas as materia}
 				<li
-					class="w-[100%] inline-flex gap-2 p-2 my-0.5 rounded-xl hyphens-auto"
+					class="my-0.5 inline-flex w-[100%] gap-2 rounded-xl p-2 hyphens-auto"
 					style="background-color: {materia.color.cssRGBA()};"
 				>
-					<div class="w-16 content-center break-words text-wrap">
+					<div class="w-16 content-center text-wrap break-words">
 						{materia.grupo}
 					</div>
 					<div class="w-[calc((100%-5rem)/2)] content-center">
@@ -52,16 +44,15 @@
 						{materia.profesor}
 					</div>
 					<div class="w-8 content-center">
-						<Eliminar click={eliminarMateriaPorId} nombre={materia.id}
-						></Eliminar>
+						<Eliminar click={eliminarMateriaPorId} nombre={materia.id}></Eliminar>
 					</div>
 				</li>
 			{/each}
 		</ul>
 	{:else}
-		<h3 class="text-center place-self-center text-2xl">
-			Empieza a seleccionar materias para generar un horario. Aquí aparecerán
-			todas las materias seleccionadas.
+		<h3 class="place-self-center text-center text-2xl">
+			Empieza a seleccionar materias para generar un horario. Aquí aparecerán todas las materias
+			seleccionadas.
 		</h3>
 	{/if}
 </article>

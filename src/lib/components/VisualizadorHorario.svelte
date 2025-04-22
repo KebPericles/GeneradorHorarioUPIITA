@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Paginador from "./Paginador.svelte";
-	import { Dia, type Materia } from "../lib/Materias";
-	import Calendario, { type Evento } from "./Calendario.svelte";
-	import { Temporal } from "@js-temporal/polyfill";
+	import Paginador from './Paginador.svelte';
+	import { Dia, type Materia } from '$lib/Materias';
+	import Calendario, { type Evento } from './Calendario.svelte';
+	import { Temporal } from '@js-temporal/polyfill';
 
 	interface Props {
 		horariosPosibles: Materia[][];
@@ -30,14 +30,14 @@
 				if (materia.horario.length === 0) return;
 
 				materia.horario.forEach((clase) => {
-					if (clase.dia.toString() !== dia) return;
+					if (Number(clase.dia) !== Number(dia)) return;
 					eventos[dia].push({
 						id: materia.id,
 						nombre: `${materia.grupo} ${materia.abreviacionNombre}`,
 						dia: clase.dia,
 						horaInicio: Temporal.PlainTime.from(clase.horaInicio),
 						horaFin: Temporal.PlainTime.from(clase.horaFin),
-						color: materia.color.cssRGBA(),
+						color: materia.color.cssRGBA()
 					});
 				});
 			});
@@ -47,7 +47,7 @@
 	});
 </script>
 
-<main class="flex flex-col gap-2 w-full min-h-[80svh]" id="vista-horario">
+<main class="flex min-h-[80svh] w-full flex-col gap-2" id="vista-horario">
 	<Paginador bind:pagina {paginas} />
 	{#if horariosPosibles[pagina]?.length > 0}
 		<article class="relative w-full">
