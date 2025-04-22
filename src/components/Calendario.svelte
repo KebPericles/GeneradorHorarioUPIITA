@@ -4,6 +4,9 @@
 
 	interface Props {
 		intervaloMinutos: number;
+		/**
+		 * Mapeo de eventos por día, siempre va a tener todos los días, pero puede ser un arreglo vacío.
+		 */
 		eventosSemana: Record<string, Evento[]>;
 	}
 	let { intervaloMinutos = 0, eventosSemana }: Props = $props();
@@ -80,7 +83,18 @@
 
 		return horasImprimir;
 	});
+	let diasVisibles = $derived.by(() => {
+		let dias = Object.keys(Dia)
+			.filter((v) => !isNaN(Number(v)))
+			.map((v) => Number(v));
+		if (eventosSemana[Dia.Sábado].length > 0) return dias; // TODO test para que siempre sean 6 dias
+		return dias.slice(0, -1);
+	}) as number[];
 
+	const posicionDeHora = (hora: Temporal.PlainTime) => {
+		let indiceHora = horasTemporal.indexOf(hora);
+		return `grid-area: ${indiceHora + 2} / 1 / ${indiceHora + 3} / 2;`;
+	};
 	const posicionDeEvento = (evento: Evento) => {
 		let posicionStyle = "";
 
@@ -97,7 +111,7 @@
 		// TODO:
 		// BUG: Error de redondeo,
 		posicionStyle = `top: ${Math.floor(proporcionHoras * 100_00) / 100}%;`;
-		posicionStyle += `height: ${Math.floor(proporcionDuracion*100_00) / 100}%;`;
+		posicionStyle += `height: ${Math.floor(proporcionDuracion * 100_00) / 100}%;`;
 
 		return posicionStyle;
 	};
@@ -124,32 +138,86 @@
 	};
 </script>
 
-<div class="calendario w-full h-full bg-gray-400 dark:bg-gray-500">
-	<ul class="flex flex-row w-full h-[8svh]">
-		<li class="w-1/2 h-full bg-gray-100 dark:bg-gray-800 content-center border-r-2 border-solid border-gray-700 dark:border-gray-400 text-xl">Horas</li>
-		{#each Object.keys(Dia).filter((v) => isNaN(Number(v))) as dia}
-			<li class="w-full h-full text-xl bg-gray-200 dark:bg-gray-700 content-center border-r-2 last:border-r-0 border-solid border-gray-300 dark:border-gray-400">{dia}</li>
-		{/each}
-	</ul>
-	<ul class="flex flex-row w-full max-h-[80svh]">
-		<li class="w-1/2 flex flex-col border-r-2 border-solid border-gray-300 dark:border-gray-400">
-			{#each horasTemporal as hora}
-				<div class="w-full h-[7svh] bg-gray-100 dark:bg-gray-800">
-					{hora.toString({ smallestUnit: "minute" })}
+<div
+	class="calendario w-full h-full bg-gray-400 dark:bg-gray-500"
+	style="--dias-visibles:{diasVisibles.length};--horas-visibles:{horasTemporal.length};"
+>
+	<div class="encabezado horas" data-alttext="Hrs"><span>Horas</span></div>
+	<div class="encabezado lunes" data-alttext="L"><span>Lunes</span></div>
+	<div class="encabezado martes" data-alttext="M"><span>Martes</span></div>
+	<div class="encabezado miercoles" data-alttext="X">
+		<span>Miércoles</span>
+	</div>
+	<div class="encabezado jueves" data-alttext="J"><span>Jueves</span></div>
+	<div class="encabezado viernes" data-alttext="V"><span>Viernes</span></div>
+	{#if diasVisibles.length > 5}
+		<div class="sabado" data-alttext="S"><span>Sábado</span></div>
+	{/if}
+
+	{#each horasTemporal as hora}
+		<div
+			class="w-full h-[7svh] bg-gray-100 dark:bg-gray-800 hora1"
+			style={posicionDeHora(hora)}
+		>
+			{hora.toString({ smallestUnit: "minute" })}
+		</div>
+	{/each}
+
+	<!--Columnas de días			-->
+	{#each diasVisibles as dia}
+		<div
+			class="w-full h-full content-center"
+			style="grid-area: 2 / {(dia as number) + 2} / {horasTemporal.length +
+				2} / {(dia as number) + 3};"
+		>
+			<div class="relative w-full h-full">
+			{#each eventosSemana[dia] as evento}
+				<div
+					class="w-full bg-gray-100 dark:bg-gray-800 absolute z-10 p-0.5 content-center"
+					style="{estiloEvento(evento)} text-box: auto;"
+				>
+					{evento.nombre}
 				</div>
 			{/each}
-		</li>
-		{#each Object.keys(eventosSemana) as dia}
-			<li class="w-full  relative top-0 bottom-0 border-r-2 last:border-r-0 border-solid border-gray-300 dark:border-gray-400">
-				{#each eventosSemana[dia] as evento}
-					<div
-						class="w-full bg-gray-100 dark:bg-gray-800 absolute z-10"
-						style={estiloEvento(evento)}
-					>
-						{evento.nombre}
-					</div>
-				{/each}
-			</li>
-		{/each}
-	</ul>
+			</div>
+		</div>
+	{/each}
 </div>
+
+<style>
+	@import "tailwindcss";
+	.calendario {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		display: grid;
+		grid-template-columns: 1fr repeat(var(--dias-visibles), 2fr);
+		grid-template-rows: 8svh repeat(var(--horas-visibles), 7svh);
+		
+	}
+
+	.calendario > .encabezado {
+		@apply bg-gray-100 dark:bg-gray-800 content-center text-xl;
+	}
+	.horas {
+		grid-area: 1 / 1 / 2 / 2;
+	}
+	.lunes {
+		grid-area: 1 / 2 / 2 / 3;
+	}
+	.martes {
+		grid-area: 1 / 3 / 2 / 4;
+	}
+	.miercoles {
+		grid-area: 1 / 4 / 2 / 5;
+	}
+	.jueves {
+		grid-area: 1 / 5 / 2 / 6;
+	}
+	.viernes {
+		grid-area: 1 / 6 / 2 / 7;
+	}
+	.sabado {
+		grid-area: 1 / 7 / 2 / 8;
+	}
+</style>

@@ -6,6 +6,7 @@ export enum Dia {
 	Miércoles,
 	Jueves,
 	Viernes,
+	Sábado,
 }
 
 export const HORA_REGEX = /(\d{2}):(\d{2})/;

@@ -1,16 +1,34 @@
 @import "tailwindcss";
 
+html {
+	font-size: 2.5svh;
+}
+
 /**
  * Tooltip con clase has-tooltip
  * Extraído de https://github.com/cosbgn/tailwindcss-tooltips
  **/
 .tooltip {
-	@apply invisible opacity-0 transition-[opacity] ease-out duration-500;
+	@apply not-md:hidden invisible opacity-0 transition-[opacity] ease-out duration-500;
 }
 
 .has-tooltip:hover .tooltip,
 .has-tooltip:hover + .tooltip {
-	@apply visible opacity-100 z-50;
+	@apply md:visible opacity-100 z-50;
+}
+
+/**
+ * Texto alternativo para responsividad
+ * Extraído de https://stackoverflow.com/questions/55975602/how-to-change-span-text-in-css-media-query
+ **/
+@media only screen and (max-width: 768px) {
+	[data-alttext] > span {
+		display: none;
+	}
+
+	[data-alttext]::before {
+		content: attr(data-alttext);
+	}
 }
 
 :root {
