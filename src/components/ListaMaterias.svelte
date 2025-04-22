@@ -33,13 +33,14 @@
 </script>
 
 <article
-	class="not-md:w-[100%] md:w-full not-md:h-[60svh] flex overflow-y-auto"
+	class="not-md:w-[100%] md:w-full not-md:h-[40svh] flex overflow-y-auto"
 >
 	{#if materiasSeleccionadas.length > 0}
 		<ul class="block w-full" id="lista-materias">
 			{#each materiasSeleccionadas as materia}
 				<li
-					class="w-[100%] inline-flex gap-2 p-2 my-0.5 bg-amber-600 rounded-xl"
+					class="w-[100%] inline-flex gap-2 p-2 my-0.5 rounded-xl hyphens-auto"
+					style="background-color: {materia.color.cssRGBA()};"
 				>
 					<div class="w-16 content-center break-words text-wrap">
 						{materia.grupo}
