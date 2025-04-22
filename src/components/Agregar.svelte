@@ -8,7 +8,7 @@
 
 <button
 	aria-label="Agregar"
-	class="w-[50px] p-0! ratio-1x1 center flex justify-center items-center"
+	class="w-full p-0! ratio-1x1 center flex justify-center items-center"
 	onclick={() => click(nombre)}
 >
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">

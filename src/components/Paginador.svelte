@@ -97,9 +97,9 @@
 			</g>
 		</svg>
 	</button>
-	<div class="relative w-0 h-0 tooltip">
+	<div class="relative -left-19 w-0 h-0 tooltip">
 		<div
-			class="relative -top-2 z-50 w-36 whitespace-normal break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white focus:outline-none"
+			class="relative -top-2 z-50 w-36 -left-36 whitespace-normal break-words rounded-lg bg-black py-1.5 px-3 font-sans text-sm font-normal text-white focus:outline-none"
 		>
 			Puedes usar la flecha derecha
 		</div>

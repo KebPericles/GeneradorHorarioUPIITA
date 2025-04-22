@@ -242,12 +242,12 @@
 	>
 		{#each modosSeleccion[modoSeleccion].selector() as seleccionable}
 			<li
-				class="text-start min-h-12 flex flex-col my-1 border-b-2 border-solid last:border-b-0 gradiente"
+				class="text-start min-h-12 flex flex-col my-1 border-b-2 border-solid last:border-b-0 gradiente justify-center"
 				id={"selector-" + seleccionable}
 			>
-				<div class="flex flex-row w-full items-center justify-between gap-2 h-auto">
+				<div class="flex flex-row w-full items-center justify-between h-auto">
 					<button
-						class="w-[30px] h-full flex flex-row nostyle ml-0.5"
+						class="w-[25px] h-full flex flex-row nostyle ml-0.5"
 						onclick={() =>
 							(seleccionMenuExpandido =
 								seleccionMenuExpandido === seleccionable ? "" : seleccionable)}
@@ -261,7 +261,7 @@
 					<div class="w-full break-words hyphens-auto text-wrap px-2">
 						{seleccionable}
 					</div>
-					<div class="w-[100px] h-full p-2 flex flex-row gap-1">
+					<div class="w-[75px] h-full p-0 flex flex-row gap-1 mr-1">
 						<Agregar
 							click={modosSeleccion[modoSeleccion].agregar}
 							nombre={seleccionable}
