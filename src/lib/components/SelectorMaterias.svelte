@@ -230,7 +230,7 @@
 				class="gradiente my-1 flex min-h-12 flex-col justify-center border-b-2 border-solid text-start last:border-b-0"
 				id={'selector-' + seleccionable}
 			>
-				<div class="flex h-auto w-full flex-row items-center justify-between">
+				<div class="flex h-auto w-full flex-row items-center justify-between py-3">
 					<button
 						class="nostyle ml-0.5 flex h-full w-[25px] flex-row"
 						onclick={() =>
