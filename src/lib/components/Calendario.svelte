@@ -176,7 +176,7 @@
 </div>
 
 <style>
-	@import 'tailwindcss';
+	@reference '../../app.css';
 	.calendario {
 		position: relative;
 		width: 100%;
