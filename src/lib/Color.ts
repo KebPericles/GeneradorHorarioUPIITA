@@ -805,4 +805,46 @@ const colores_wil = [
 	[102, 0, 56]
 ];
 
+const colores_wilxvale_crossover = [
+	'#ff5a5a',
+	'#ffa034',
+	'#ccdd2c',
+	'#76d73f',
+	'#36d551',
+	'#2fcfa1',
+	'#46afd3',
+	'#4662df',
+	'#8451e1',
+	'#cd4adb',
+	'#dd4899'
+];
+
+const colores_wilxvale_crossover_extendido = [
+	'#ff5a5a',
+	'#ff905a',
+	'#ffa034',
+	'#ddb72c',
+	'#ccdd2c',
+	'#a5d73f',
+	'#76d73f',
+	'#4cd536',
+	'#36d551',
+	'#2fcf74',
+	'#2fcfa1',
+	'#46d3cf',
+	'#46afd3',
+	'#468ddf',
+	'#4662df',
+	'#5951e1',
+	'#8451e1',
+	'#a34adb',
+	'#cd4adb',
+	'#dd48c9',
+	'#dd4899'
+];
+
 export const ColoresUwU = colores_wil.map((rgb) => Color.makeRGB(rgb[0], rgb[1], rgb[2]));
+export const ColoresOwO = colores_wilxvale_crossover.map((hex) => Color.makeHEX(hex));
+export const ColoresOwOExtendido = colores_wilxvale_crossover_extendido.map((hex) =>
+	Color.makeHEX(hex)
+);

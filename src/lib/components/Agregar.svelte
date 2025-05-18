@@ -11,7 +11,7 @@
 	class="ratio-1x1 center flex w-full items-center justify-center p-0!"
 	onclick={() => click(nombre)}
 >
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 		<path
 			d="M4 12H20M12 4V20"
 			stroke="#ffffff"

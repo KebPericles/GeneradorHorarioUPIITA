@@ -1,4 +1,4 @@
-import { Color, ColoresUwU } from './Color';
+import { Color, ColoresOwO, ColoresUwU } from './Color';
 
 export enum Dia {
 	Lunes,
@@ -44,7 +44,6 @@ export type MateriaOptions = {
 	grupo: string;
 	profesor: string;
 	horario: Clase[];
-	color?: number;
 };
 
 export class Materia {
@@ -53,7 +52,6 @@ export class Materia {
 	grupo: string = '';
 	profesor: string = '';
 	horario: Clase[] = [];
-	color: Color = new Color();
 
 	constructor(options?: MateriaOptions) {
 		if (options) {
@@ -61,7 +59,6 @@ export class Materia {
 			this.grupo = options.grupo ?? '';
 			this.profesor = options.profesor ?? '';
 			this.horario = options.horario ?? [];
-			this.color = options.color !== undefined ? ColoresUwU[options.color] : ColoresUwU[0]; // TODO: test options.color nunca null
 		}
 	}
 
@@ -155,6 +152,23 @@ export class Materia {
 		return false;
 	}
 
+	get hashNombre() {
+		return Math.abs(
+			(this.nombre as string).split('').reduce((hash, char) => {
+				return char.charCodeAt(0) + (hash << 6) + (hash << 16) - hash;
+			}, 0)
+		);
+	}
+
+	/**
+	 * Función para calcular el color de la materia en un tema
+	 * @param tema Tema de colores representado por un array de Color
+	 * @returns
+	 */
+	color(tema: Color[]) {
+		return tema[this.hashNombre % tema.length];
+	}
+
 	toString() {
 		return JSON.stringify(this);
 	}
@@ -179,8 +193,7 @@ export const materiasFromJSON = (json: string) => {
 				nombre: materia._nombre,
 				grupo: materia.grupo,
 				profesor: materia.profesor,
-				horario: materia.horario,
-				color: Math.round(Math.random() * 10)
+				horario: materia.horario
 			})
 		);
 	}

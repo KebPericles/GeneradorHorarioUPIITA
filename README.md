@@ -9,8 +9,12 @@
 ### Tareas
 
 - Selector de semestre/escuela
-
+  - Selección de ciclo escolar
+  - Selección de carrera
+    - Primera vez menú en grande para seleccionar carrera y guardar en local storage
+    - Luego menú en pequeño para seleccionar carrera y guardar en local storage
   - Extraer datos
+  - Guardar en local storage la selección de materias
 
 - Menú para seleccionar las materias a incluir en el horario
 
@@ -30,6 +34,8 @@
     - Espaciado entre columnas
 
 - Barra de busqueda tanto en el menú de selección como en la selección
+
+- Compartir el horario generado
 
 ### Glosario
 

@@ -1,10 +1,11 @@
 <script lang="ts">
 	interface Props {
 		orientacion: 'izquierda' | 'derecha' | 'arriba' | 'abajo';
-		styleClass?: string;
+		class?: string;
+		fill?: string;
 	}
 
-	let { orientacion, styleClass }: Props = $props();
+	let { orientacion, class: styleClass, fill="fill-primary" }: Props = $props();
 
 	const rotacion = {
 		izquierda: 'rotate-0',
@@ -15,7 +16,7 @@
 </script>
 
 <svg
-	class="h-auto w-auto {rotacion[orientacion]} {styleClass}"
+	class="h-auto w-auto {rotacion[orientacion]} {styleClass} {fill}"
 	fill="#ffffff"
 	version="1.1"
 	xmlns="http://www.w3.org/2000/svg"

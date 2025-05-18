@@ -3,13 +3,15 @@
 	import { Dia, type Materia } from '$lib/Materias';
 	import Calendario, { type Evento } from './Calendario.svelte';
 	import { Temporal } from '@js-temporal/polyfill';
+	import { Color } from '$lib/Color';
 
 	interface Props {
 		horariosPosibles: Materia[][];
 		cantidadDeMateriasSeleccionadas: number;
+		tema: Color[];
 	}
 
-	let { horariosPosibles, cantidadDeMateriasSeleccionadas }: Props = $props();
+	let { horariosPosibles, cantidadDeMateriasSeleccionadas, tema }: Props = $props();
 
 	let pagina = $state(0);
 	let paginas = $derived.by(() => {
@@ -37,7 +39,7 @@
 						dia: clase.dia,
 						horaInicio: Temporal.PlainTime.from(clase.horaInicio),
 						horaFin: Temporal.PlainTime.from(clase.horaFin),
-						color: materia.color.cssRGBA()
+						color: materia.color(tema).cssRGBA()
 					});
 				});
 			});

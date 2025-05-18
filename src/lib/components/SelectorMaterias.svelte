@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte';
-	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import { obtenerNombresDeMaterias, obtenerProfesores } from '$lib/data/db';
 	import { Materia } from '$lib/Materias';
 	import Agregar from './Agregar.svelte';
 	import Eliminar from './Eliminar.svelte';
 	import FlechaDropdown from './FlechaDropdown.svelte';
+	import Dropdown from './Dropdown.svelte';
 
 	interface Props {
 		todasLasMaterias: Materia[];
@@ -151,8 +150,7 @@
 
 	let modoSeleccion: string = $state('Por materia');
 	let dropdownOpen = $state(false);
-	let activeClass =
-		'text-green-500 dark:text-green-300 hover:text-green-700 dark:hover:text-green-500';
+	let activeClass = ' hover:text-green-700 dark:hover:text-green-500';
 
 	$effect(() => {
 		modosSeleccion[modoSeleccion].selector();
@@ -190,7 +188,7 @@
 	{/if}
 
 	<div
-		class="absolute top-0 bottom-0 -left-12 w-12 flex-col justify-center bg-amber-950 p-2 not-md:hidden md:flex"
+		class="absolute top-0 bottom-0 -left-12 w-12 flex-col justify-center bg-accent p-2 not-md:hidden md:flex"
 	>
 		<button
 			aria-label="Mostrar u ocultar selector de materias"
@@ -198,27 +196,31 @@
 			onclick={() => (visible = !visible)}
 		>
 			{#if visible}
-				<FlechaDropdown orientacion="izquierda"></FlechaDropdown>
+				<FlechaDropdown orientacion="izquierda" ></FlechaDropdown>
 			{:else}
-				<FlechaDropdown orientacion="derecha"></FlechaDropdown>
+				<FlechaDropdown orientacion="derecha" ></FlechaDropdown>
 			{/if}
 		</button>
 	</div>
 
 	<div class="relative h-11 w-full peer-not-checked:hidden">
-		<Button class="h-full w-[100%]"
-			>{modoSeleccion}<ChevronDownOutline class="ms-2 h-6 w-6 text-white dark:text-white" /></Button
-		>
 		<Dropdown bind:open={dropdownOpen} class="w-[100%]">
 			{#each Object.keys(modosSeleccion) as modo}
-				<DropdownItem
-					class={modo == modoSeleccion ? activeClass : ''}
-					on:click={() => {
-						modoSeleccion = modo;
-						dropdownOpen = false;
-					}}>{modo}</DropdownItem
-				>
+				<li class="w-full bg-primary h-10 content-center {modo === modoSeleccion ? activeClass : ''}">
+					<button class="nostyle "
+						onclick={() => {
+							modoSeleccion = modo;
+							dropdownOpen = false;
+						}}
+					>
+						{modo}
+					</button>
+				</li>
 			{/each}
+
+			{#snippet titulo()}
+				{modoSeleccion}
+			{/snippet}
 		</Dropdown>
 	</div>
 	<ul
@@ -238,9 +240,9 @@
 								seleccionMenuExpandido === seleccionable ? '' : seleccionable)}
 					>
 						{#if seleccionMenuExpandido === seleccionable}
-							<FlechaDropdown orientacion="abajo" styleClass="w-full" />
+							<FlechaDropdown orientacion="abajo" class="w-full" />
 						{:else}
-							<FlechaDropdown orientacion="derecha" styleClass="w-full" />
+							<FlechaDropdown orientacion="derecha" class="w-full " />
 						{/if}
 					</button>
 					<div class="w-full px-2 text-wrap break-words hyphens-auto">

@@ -1,12 +1,14 @@
 <script lang="ts">
+	import { Color } from '$lib/Color';
 	import type { Materia } from '$lib/Materias';
 	import Eliminar from './Eliminar.svelte';
 
 	interface Props {
 		materiasSeleccionadas: Materia[];
+		tema: Color[];
 	}
 
-	let { materiasSeleccionadas = $bindable([]) }: Props = $props();
+	let { materiasSeleccionadas = $bindable([]), tema }: Props = $props();
 	let materiasSeleccionadasAnterior: Materia[] = [];
 
 	$effect(() => {
@@ -31,8 +33,8 @@
 		<ul class="block w-full" id="lista-materias">
 			{#each materiasSeleccionadas as materia}
 				<li
-					class="my-0.5 inline-flex w-[100%] gap-2 rounded-xl p-2 hyphens-auto"
-					style="background-color: {materia.color.cssRGBA()};"
+					class="my-0.5 inline-flex w-[100%] gap-2 rounded-xl p-2 hyphens-auto text-textomateria font-semibold"
+					style="background-color: {materia.color(tema).cssRGBA()};"
 				>
 					<div class="w-16 content-center text-wrap break-words">
 						{materia.grupo}

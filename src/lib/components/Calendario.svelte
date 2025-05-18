@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Temporal } from '@js-temporal/polyfill';
 	import { Dia, Materia } from '$lib/Materias';
+	import { Color } from '$lib/Color';
 
 	interface Props {
 		intervaloMinutos: number;
@@ -105,10 +106,23 @@
 		// TODO:
 		// BUG: Error de redondeo,
 		posicionStyle = `top: ${Math.floor(proporcionHoras * 100_00) / 100}%;`;
-		posicionStyle += `height: ${Math.floor(proporcionDuracion * 100_00) / 100}%;`;
+
+		if (margenEvento) {
+			posicionStyle += `height: calc(${Math.floor(proporcionDuracion * 100_00) / 100}% - 2px);`;
+		} else {
+			posicionStyle += `height: ${Math.floor(proporcionDuracion * 100_00) / 100}%;`;
+		}
 
 		return posicionStyle;
 	};
+
+	// TODO: Configurables
+	const CLASS_MARGEN_EVENTO = 'margen-evento';
+	const CLASS_BORDE_REDONDEADO = 'borde-redondeado';
+	const bordeRedondeado = false;
+	const margenEvento = false;
+	const gradienteEvento = false;
+
 	const estiloEvento = (evento: Evento) => {
 		let estilo = '';
 		estilo += posicionDeEvento(evento);
@@ -125,15 +139,20 @@
 		// darle soporte a colores de texto.
 		//
 		// Además actualmente es extendible para que el usuario
-		// pueda agregar sus propios colores.
-		estilo += `background-color: ${evento.color};`;
+		// pueda agregar sus propios colores
+		if (gradienteEvento) {
+			estilo += `background-image: linear-gradient(to bottom, ${evento.color} 0%, ${Color.parse(evento.color)?.darken(0.12).cssRGBA()} 50%, ${evento.color} 100%);`;
+			estilo += `border-image-slice: 1; border-image-source: linear-gradient(to bottom, transparent 0%, ${Color.parse(evento.color)?.darken(0.12).cssRGBA()} 50%, transparent 100%);`;
+		} else {
+			estilo += `background-color: ${evento.color};`;
+		}
 
 		return estilo;
 	};
 </script>
 
 <div
-	class="calendario h-full w-full bg-gray-400 dark:bg-gray-500"
+	class="calendario h-full w-full bg-secondary dark:bg-neutral-600"
 	style="--dias-visibles:{diasVisibles.length};--horas-visibles:{horasTemporal.length};"
 >
 	<div class="encabezado horas" data-alttext="Hrs"><span>Horas</span></div>
@@ -149,7 +168,10 @@
 	{/if}
 
 	{#each horasTemporal as hora}
-		<div class="hora1 h-[7svh] w-full bg-gray-100 dark:bg-gray-800" style={posicionDeHora(hora)}>
+		<div
+			class="hora1 h-[7svh] w-full bg-primary text-accent brightness-150 opacity-[80%]"
+			style={posicionDeHora(hora)}
+		>
 			{hora.toString({ smallestUnit: 'minute' })}
 		</div>
 	{/each}
@@ -157,14 +179,23 @@
 	<!--Columnas de días			-->
 	{#each diasVisibles as dia}
 		<div
-			class="h-full w-full content-center"
+			class="h-full w-full content-center
+			[&.margen-materias]:pl-[1px]
+			[&.margen-materias]:last:pr-[1px]
+			{margenEvento ? CLASS_MARGEN_EVENTO : ''}"
 			style="grid-area: 2 / {(dia as number) + 2} / {horasTemporal.length + 2} / {(dia as number) +
 				3};"
 		>
-			<div class="relative h-full w-full">
+			<div class="relative flex h-full w-full">
 				{#each eventosSemana[dia] as evento}
 					<div
-						class="absolute z-10 w-full content-center bg-gray-100 p-0.5 dark:bg-gray-800"
+						class="absolute z-10 w-full content-center
+						text-textomateria font-semibold
+						[&.borde-redondeado]:rounded-lg
+						[&.margen-materias]:m-[1px]
+						[&.margen-materias]:w-[calc(100%-2px)]
+						{gradienteEvento ? 'border-4' : ''}
+						{margenEvento ? CLASS_MARGEN_EVENTO : ''} {bordeRedondeado ? CLASS_BORDE_REDONDEADO : ''}"
 						style="{estiloEvento(evento)} text-box: auto;"
 					>
 						{evento.nombre}
@@ -187,7 +218,7 @@
 	}
 
 	.calendario > .encabezado {
-		@apply content-center bg-gray-100 text-xl dark:bg-gray-800;
+		@apply content-center bg-primary text-calendario text-xl dark:bg-neutral-900;
 	}
 	.horas {
 		grid-area: 1 / 1 / 2 / 2;
