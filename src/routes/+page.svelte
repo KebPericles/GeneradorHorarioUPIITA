@@ -4,7 +4,7 @@
 	import SelectorMaterias from '$lib/components/SelectorMaterias.svelte';
 	import VisualizadorHorario from '$lib/components/VisualizadorHorario.svelte';
 	import { crearCombinaciones, obtenerTodasLasMaterias } from '$lib/data/db';
-	import { Materia } from 'kesos-ipnsaes-api';
+	import { Materia, materiasFromDiccionario } from 'kesos-ipnsaes-api';
 	import { onMount } from 'svelte';
 
 	let todasLasMaterias: Materia[] = $state([]);
@@ -35,7 +35,20 @@
 	onMount(async () => {
 		await actualizarBaseDeDatos();
 	});
+	
 </script>
+
+<svelte:window
+	onmessage={async (event) => {
+		console.log('Recibido mensaje: ', event);
+		if (event.data?.tipo === 'TODAS_MATERIAS_A_GENERADOR') {
+			console.log('TODAS_MATERIAS_A_GENERADOR');
+			console.debug(event.data);
+			cicloEscolar = event.data.cicloEscolar;
+			todasLasMaterias = materiasFromDiccionario(event.data.materias);
+		}
+	}}
+/>
 
 <header class="w-full justify-between py-4">
 	<h1>Generador de horarios UPIITA</h1>

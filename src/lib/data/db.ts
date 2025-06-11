@@ -3,7 +3,7 @@ import { HORA_REGEX, materiasFromJSON, type Clase, type Materia } from 'kesos-ip
 export const obtenerTodasLasMaterias = async (cicloEscolar: string) => {
 	let todasLasMaterias: Materia[];
 
-	let materiasString = await (await fetch(`/data/json/${cicloEscolar}.json`)).text();
+	let materiasString = await (await fetch(`/data/${cicloEscolar}.json`)).text();
 	todasLasMaterias = materiasFromJSON(materiasString);
 
 	return todasLasMaterias;
