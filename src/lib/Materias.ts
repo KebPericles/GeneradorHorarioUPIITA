@@ -1,5 +1,3 @@
-import { Color, ColoresOwO, ColoresUwU } from './Color';
-
 export enum Dia {
 	Lunes,
 	Martes,
@@ -158,15 +156,6 @@ export class Materia {
 				return char.charCodeAt(0) + (hash << 6) + (hash << 16) - hash;
 			}, 0)
 		);
-	}
-
-	/**
-	 * Función para calcular el color de la materia en un tema
-	 * @param tema Tema de colores representado por un array de Color
-	 * @returns
-	 */
-	color(tema: Color[]) {
-		return tema[this.hashNombre % tema.length];
 	}
 
 	toString() {

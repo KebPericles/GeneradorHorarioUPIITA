@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Color } from '$lib/Color';
 	import type { Materia } from '$lib/Materias';
+	import { colorMateria } from '$lib/util';
 	import Eliminar from './Eliminar.svelte';
 
 	interface Props {
@@ -33,8 +34,8 @@
 		<ul class="block w-full" id="lista-materias">
 			{#each materiasSeleccionadas as materia}
 				<li
-					class="my-0.5 inline-flex w-[100%] gap-2 rounded-xl p-2 hyphens-auto text-textomateria font-semibold"
-					style="background-color: {materia.color(tema).cssRGBA()};"
+					class="text-textomateria my-0.5 inline-flex w-[100%] gap-2 rounded-xl p-2 font-semibold hyphens-auto"
+					style="background-color: {colorMateria(tema, materia).cssRGBA()};"
 				>
 					<div class="w-16 content-center text-wrap break-words">
 						{materia.grupo}

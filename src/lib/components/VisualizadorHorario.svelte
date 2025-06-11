@@ -4,6 +4,7 @@
 	import Calendario, { type Evento } from './Calendario.svelte';
 	import { Temporal } from '@js-temporal/polyfill';
 	import { Color } from '$lib/Color';
+	import { colorMateria } from '$lib/util';
 
 	interface Props {
 		horariosPosibles: Materia[][];
@@ -39,7 +40,7 @@
 						dia: clase.dia,
 						horaInicio: Temporal.PlainTime.from(clase.horaInicio),
 						horaFin: Temporal.PlainTime.from(clase.horaFin),
-						color: materia.color(tema).cssRGBA()
+						color: colorMateria(tema, materia).cssRGBA()
 					});
 				});
 			});
