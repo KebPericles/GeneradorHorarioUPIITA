@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Paginador from './Paginador.svelte';
-	import { Dia, type Materia } from '$lib/Materias';
+	import { Dia, type Materia } from 'kesos-ipnsaes-api';
 	import Calendario, { type Evento } from './Calendario.svelte';
 	import { Temporal } from '@js-temporal/polyfill';
 	import { Color } from '$lib/Color';

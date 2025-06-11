@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Temporal } from '@js-temporal/polyfill';
-	import { Dia, Materia } from '$lib/Materias';
+	import { Dia, Materia } from 'kesos-ipnsaes-api';
 	import { Color } from '$lib/Color';
 
 	interface Props {

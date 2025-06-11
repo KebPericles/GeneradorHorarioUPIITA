@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { obtenerNombresDeMaterias, obtenerProfesores } from '$lib/data/db';
-	import { Materia } from '$lib/Materias';
+	import { Materia } from 'kesos-ipnsaes-api';
 	import Agregar from './Agregar.svelte';
 	import Eliminar from './Eliminar.svelte';
 	import FlechaDropdown from './FlechaDropdown.svelte';

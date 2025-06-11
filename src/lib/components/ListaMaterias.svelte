@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Color } from '$lib/Color';
-	import type { Materia } from '$lib/Materias';
+	import type { Materia } from 'kesos-ipnsaes-api';
 	import { colorMateria } from '$lib/util';
 	import Eliminar from './Eliminar.svelte';
 

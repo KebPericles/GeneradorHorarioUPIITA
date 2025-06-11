@@ -1,4 +1,4 @@
-import { HORA_REGEX, materiasFromJSON, type Clase, type Materia } from '../Materias';
+import { HORA_REGEX, materiasFromJSON, type Clase, type Materia } from 'kesos-ipnsaes-api';
 
 export const obtenerTodasLasMaterias = async (cicloEscolar: string) => {
 	let todasLasMaterias: Materia[];

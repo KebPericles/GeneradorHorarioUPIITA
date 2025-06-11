@@ -4,7 +4,7 @@
 	import SelectorMaterias from '$lib/components/SelectorMaterias.svelte';
 	import VisualizadorHorario from '$lib/components/VisualizadorHorario.svelte';
 	import { crearCombinaciones, obtenerTodasLasMaterias } from '$lib/data/db';
-	import { Materia } from '$lib/Materias';
+	import { Materia } from 'kesos-ipnsaes-api';
 	import { onMount } from 'svelte';
 
 	let todasLasMaterias: Materia[] = $state([]);

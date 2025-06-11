@@ -1,5 +1,5 @@
 import type { Color } from "./Color";
-import type { Materia } from "./Materias";
+import type { Materia } from "kesos-ipnsaes-api";
 
 /**
  * Función para calcular el color de la materia en un tema
