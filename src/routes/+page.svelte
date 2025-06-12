@@ -7,6 +7,19 @@
 	import { Materia, materiasFromDiccionario } from 'kesos-ipnsaes-api';
 	import { onMount } from 'svelte';
 
+	let datosHorario = $state({
+		cicloEscolar: 'a',
+		tema: 'UwU',
+		escuela: 'UPIITA'
+	});
+	$effect(() => {
+		if (datosHorario.escuela) {
+			document.title = `Cahuitl Orariux - ${datosHorario.escuela}`;
+		} else {
+			document.title = 'Cahuitl Orariux';
+		}
+	});
+
 	let todasLasMaterias: Materia[] = $state([]);
 	let materiasSeleccionadas: Materia[] = $state([]);
 	let cantidadDeMateriasSeleccionadas = $derived(materiasSeleccionadas.length);
@@ -17,7 +30,7 @@
 		UwU: { 'data-theme': 'dark', 'tema-calendario': ColoresUwU },
 		Wil: { 'data-theme': 'wil', 'tema-calendario': ColoresOwOExtendido }
 	};
-	let tema = 'UwU';
+	let tema = $derived(datosHorario.tema);
 	let temaHtml = $derived(Temas[tema]['data-theme'] as string);
 	$effect(() => {
 		document.documentElement.setAttribute('data-theme', temaHtml);
@@ -26,7 +39,7 @@
 	let temaCalendario = $derived(Temas[tema]['tema-calendario'] as Color[]);
 
 	// TODO: Menú para seleccionar ciclo escolar
-	let cicloEscolar = $state('a');
+	let cicloEscolar = $derived(datosHorario.cicloEscolar);
 
 	const actualizarBaseDeDatos = async () => {
 		todasLasMaterias = await obtenerTodasLasMaterias(cicloEscolar);
@@ -35,7 +48,6 @@
 	onMount(async () => {
 		await actualizarBaseDeDatos();
 	});
-	
 </script>
 
 <svelte:window
@@ -44,7 +56,7 @@
 		if (event.data?.tipo === 'TODAS_MATERIAS_A_GENERADOR') {
 			console.log('TODAS_MATERIAS_A_GENERADOR');
 			console.debug(event.data);
-			cicloEscolar = event.data.cicloEscolar;
+			datosHorario.cicloEscolar = event.data.cicloEscolar;
 			todasLasMaterias = materiasFromDiccionario(event.data.materias);
 			materiasSeleccionadas = [];
 		}
@@ -52,7 +64,7 @@
 />
 
 <header class="w-full justify-between py-4">
-	<h1>Generador de horarios UPIITA</h1>
+	<h1>Cahuitl Orariux UPIITA</h1>
 </header>
 <div class="flex flex-row gap-4 p-4 not-md:h-auto not-md:flex-wrap md:h-[65svh]">
 	<SelectorMaterias {todasLasMaterias} bind:materiasSeleccionadas />

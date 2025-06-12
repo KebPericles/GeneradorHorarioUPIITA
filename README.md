@@ -1,5 +1,8 @@
-# Generador de horario UPIITA
+# Cahuitl Orariux IPNSAES
 [![Deploy to GitHub Pages](https://github.com/KebPericles/GeneradorHorarioUPIITA/actions/workflows/deploy.yml/badge.svg)](https://github.com/KebPericles/GeneradorHorarioUPIITA/actions/workflows/deploy.yml) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/KebPericles/GeneradorHorarioUPIITA)
+
+Actualmente solo funciona para UPIITA.
+
 ## Créditos
 
 - Wilpan: ayuda con la lógica
