@@ -17,7 +17,7 @@
 		UwU: { 'data-theme': 'dark', 'tema-calendario': ColoresUwU },
 		Wil: { 'data-theme': 'wil', 'tema-calendario': ColoresOwOExtendido }
 	};
-	let tema = 'Wil';
+	let tema = 'UwU';
 	let temaHtml = $derived(Temas[tema]['data-theme'] as string);
 	$effect(() => {
 		document.documentElement.setAttribute('data-theme', temaHtml);
@@ -46,6 +46,7 @@
 			console.debug(event.data);
 			cicloEscolar = event.data.cicloEscolar;
 			todasLasMaterias = materiasFromDiccionario(event.data.materias);
+			materiasSeleccionadas = [];
 		}
 	}}
 />
