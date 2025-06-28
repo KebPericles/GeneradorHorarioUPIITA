@@ -11,13 +11,14 @@
 
 	let { materiasSeleccionadas = $bindable([]), tema }: Props = $props();
 	let materiasSeleccionadasAnterior: Materia[] = [];
+	let articleListaMaterias: HTMLElement;
 
 	$effect(() => {
 		if (materiasSeleccionadas.length > materiasSeleccionadasAnterior.length) {
-			document.getElementById('lista-materias')?.lastElementChild?.scrollIntoView({
+			// Scroll lista
+			articleListaMaterias?.scrollTo({
 				behavior: 'smooth',
-				block: 'end',
-				inline: 'end'
+				top: articleListaMaterias?.scrollHeight
 			});
 		}
 
@@ -29,7 +30,10 @@
 	};
 </script>
 
-<article class="flex overflow-y-auto not-md:h-[40svh] not-md:w-[100%] md:w-full">
+<article
+	class="flex overflow-y-auto not-md:h-[40svh] not-md:w-[100%] md:w-full"
+	bind:this={articleListaMaterias}
+>
 	{#if materiasSeleccionadas.length > 0}
 		<ul class="block w-full" id="lista-materias">
 			{#each materiasSeleccionadas as materia}
