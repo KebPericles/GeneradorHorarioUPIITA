@@ -7,13 +7,15 @@
 	import { Materia, materiasFromDiccionario } from 'kesos-ipnsaes-api';
 	import { onMount } from 'svelte';
 
+	const NO_ESCUELA = 'Sin escuela';
+
 	let datosHorario = $state({
 		cicloEscolar: 'a',
 		tema: 'UwU',
-		escuela: 'UPIITA'
+		escuela: NO_ESCUELA
 	});
 	$effect(() => {
-		if (datosHorario.escuela) {
+		if (datosHorario.escuela && datosHorario.escuela !== NO_ESCUELA) {
 			document.title = `Cahuitl Orariux - ${datosHorario.escuela}`;
 		} else {
 			document.title = 'Cahuitl Orariux';
@@ -63,8 +65,17 @@
 	}}
 />
 
-<header class="w-full justify-between py-4">
-	<h1>Cahuitl Orariux UPIITA</h1>
+<header class="flex w-full flex-row items-center gap-8 py-4">
+	<div class="block items-center gap-4 mx-6">
+		<h1 class="text-6xl!">Cahuitl Orariux</h1>
+		<h6 class="text-xs">"No se trata de lo que es, sino de lo que puede ser"</h6>
+	</div>
+	<div class="flex flex-row items-center gap-4">
+		<h2 class="text-4xl">{datosHorario.escuela}</h2>
+	</div>
+	<div class="flex flex-row items-center gap-4">
+		<h2 class="text-4xl">{datosHorario.cicloEscolar}</h2>
+	</div>
 </header>
 <div class="flex flex-row gap-4 p-4 not-md:h-auto not-md:flex-wrap md:h-[65svh]">
 	<SelectorMaterias {todasLasMaterias} bind:materiasSeleccionadas />
