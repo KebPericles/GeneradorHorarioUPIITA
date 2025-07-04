@@ -66,8 +66,8 @@
 	}}
 />
 
-<header class="flex w-full flex-row items-center gap-8 py-4">
-	<div class="block items-center gap-4 mx-6">
+<header class="flex w-full items-center gap-8 py-4 not-md:flex-col md:flex-row">
+	<div class="mx-6 block items-center gap-4">
 		<h1 class="text-6xl!">Cahuitl Orariux</h1>
 		<h6 class="text-xs">"No se trata de lo que es, sino de lo que puede ser"</h6>
 	</div>
