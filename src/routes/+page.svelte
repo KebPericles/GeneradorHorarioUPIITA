@@ -60,6 +60,7 @@
 			console.debug(event.data);
 			datosHorario.cicloEscolar = event.data.cicloEscolar;
 			todasLasMaterias = materiasFromDiccionario(event.data.materias);
+			datosHorario.escuela = (event.data.escuela as String).toUpperCase();
 			materiasSeleccionadas = [];
 		}
 	}}
