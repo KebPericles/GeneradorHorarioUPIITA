@@ -121,7 +121,11 @@
 	onMount(async () => {
 		console.log('onMount');
 
-		await actualizarBaseDeDatos();
+		try {
+			await actualizarBaseDeDatos();
+		} catch (error) {
+			console.error(error);
+		}
 
 		window.postMessage({ tipo: 'PAGINA_CAHUITL_ORARIUX_INIT' });
 	});
