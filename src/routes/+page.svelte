@@ -3,9 +3,10 @@
 	import ListaMaterias from '$lib/components/ListaMaterias.svelte';
 	import SelectorMaterias from '$lib/components/SelectorMaterias.svelte';
 	import VisualizadorHorario from '$lib/components/VisualizadorHorario.svelte';
-	import { crearCombinaciones, obtenerTodasLasMaterias } from '$lib/data/db';
+	import { chocanHorario, crearCombinaciones, obtenerTodasLasMaterias } from '$lib/data/db';
 	import { Materia, materiasFromDiccionario } from 'kesos-ipnsaes-api';
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	const NO_ESCUELA = 'Sin escuela';
 
@@ -24,6 +25,76 @@
 
 	let todasLasMaterias: Materia[] = $state([]);
 	let materiasSeleccionadas: Materia[] = $state([]);
+	let materia: Materia | undefined = $state(undefined);
+
+	/**
+	 * Mapeo de id de materia a lista de materias traslapadas
+	 */
+	let traslapes: Map<string, Materia[]> = new SvelteMap();
+
+	$inspect(materiasSeleccionadas).with(console.debug);
+
+	$effect(() => {
+		if (materiasSeleccionadas.length > untrack(() => traslapes.size)) {
+			// CASO: Materias agregadas
+			let materiasAgregadas = materiasSeleccionadas.filter(
+				(materia) => !(materia.id in untrack(() => traslapes.keys()))
+			);
+
+			for (let i = 0; i < materiasAgregadas.length; i++) {
+				const materia = materiasAgregadas[i];
+				untrack(() => traslapes.set(materia.id, []));
+			}
+
+			for (let i = 0; i < materiasAgregadas.length; i++) {
+				const materia = materiasAgregadas[i];
+
+				for (let j = i + 1; j < materiasSeleccionadas.length; j++) {
+					const materiaSeleccionada = materiasSeleccionadas[j];
+					if (materiaSeleccionada.nombre === materia.nombre) continue;
+
+					// Verificar si hay traslape
+					if (!chocanHorario(materia, materiaSeleccionada)) continue;
+
+					untrack(() => traslapes.get(materia.id)?.push(materiaSeleccionada));
+					untrack(() => traslapes.get(materiaSeleccionada.id)?.push(materia));
+				}
+			}
+		} else {
+			// CASO: Materias eliminadas
+			let idsMateriasSeleccionadas = materiasSeleccionadas.map((materia) => materia.id);
+
+			// Eliminar la materia del registro
+			untrack(() =>
+				traslapes
+					.keys()
+					.filter((materiaId) => !idsMateriasSeleccionadas.includes(materiaId))
+					.forEach((materiaId) => {
+						traslapes.delete(materiaId);
+						console.debug('eliminando', materiaId);
+					})
+			);
+
+			// Eliminar los traslapes en otras materias
+			for (const materiaId of untrack(() => traslapes.keys())) {
+				let traslape = untrack(() => traslapes.get(materiaId));
+				if (!traslape) continue;
+
+				untrack(() =>
+					traslapes.set(
+						materiaId,
+						traslape.filter((materia) => idsMateriasSeleccionadas.includes(materia.id))
+					)
+				);
+			}
+		}
+
+		console.debug(
+			'traslapes',
+			untrack(() => traslapes)
+		);
+	});
+
 	let cantidadDeMateriasSeleccionadas = $derived(materiasSeleccionadas.length);
 	let horariosPosibles: Materia[][] = $derived(crearCombinaciones(materiasSeleccionadas));
 
@@ -37,8 +108,8 @@
 	$effect(() => {
 		document.documentElement.setAttribute('data-theme', temaHtml);
 	});
-	// TODO: Configurable tema
-	let temaCalendario = $derived(Temas[tema]['tema-calendario'] as Color[]);
+
+	let temaCalendario = $derived(Temas[tema]['tema-calendario'] as Color[]); // TODO: Configurable tema
 
 	// TODO: Menú para seleccionar ciclo escolar
 	let cicloEscolar = $derived(datosHorario.cicloEscolar);
@@ -48,7 +119,11 @@
 	};
 
 	onMount(async () => {
+		console.log('onMount');
+
 		await actualizarBaseDeDatos();
+
+		window.postMessage({ tipo: 'PAGINA_CAHUITL_ORARIUX_INIT' });
 	});
 </script>
 
@@ -80,9 +155,19 @@
 </header>
 <div class="flex flex-row gap-4 p-4 not-md:h-auto not-md:flex-wrap md:h-[65svh]">
 	<SelectorMaterias {todasLasMaterias} bind:materiasSeleccionadas />
-	<ListaMaterias bind:materiasSeleccionadas tema={temaCalendario} />
+	<ListaMaterias
+		bind:materiasSeleccionadas
+		tema={temaCalendario}
+		bind:materiaParaDetalles={materia}
+		{traslapes}
+	/>
 </div>
-<VisualizadorHorario {horariosPosibles} {cantidadDeMateriasSeleccionadas} tema={temaCalendario} />
+<VisualizadorHorario
+	{horariosPosibles}
+	{cantidadDeMateriasSeleccionadas}
+	tema={temaCalendario}
+	bind:materia
+/>
 
 <style global>
 	@reference '../app.css';

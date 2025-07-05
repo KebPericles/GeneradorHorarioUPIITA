@@ -3,15 +3,31 @@
 	import type { Materia } from 'kesos-ipnsaes-api';
 	import { colorMateria } from '$lib/util';
 	import Eliminar from './Eliminar.svelte';
+	import SvgTick from '$lib/assets/SVGTick.svelte';
+	import SvgWarn from '$lib/assets/SVGWarn.svelte';
 
 	interface Props {
 		materiasSeleccionadas: Materia[];
 		tema: Color[];
+		/**
+		 * Materia para mostrar información detallada, se pasa hacia el VisualizadorHorario para mostrar el horario
+		 */
+		materiaParaDetalles?: Materia;
+		/**
+		 * Traslapes de materias, id de materia a lista de materias traslapadas
+		 */
+		traslapes: Map<string, Materia[]>;
 	}
 
-	let { materiasSeleccionadas = $bindable([]), tema }: Props = $props();
+	let {
+		materiasSeleccionadas = $bindable([]),
+		tema,
+		materiaParaDetalles = $bindable(),
+		traslapes
+	}: Props = $props();
 	let materiasSeleccionadasAnterior: Materia[] = [];
 	let articleListaMaterias: HTMLElement;
+	let traslapesMateriaActiva = $derived(traslapes?.get(materiaParaDetalles?.id ?? ''));
 
 	$effect(() => {
 		if (materiasSeleccionadas.length > materiasSeleccionadasAnterior.length) {
@@ -26,8 +42,17 @@
 	});
 
 	const eliminarMateriaPorId = (idMateria: string) => {
+		if (materiaParaDetalles?.id === idMateria) materiaParaDetalles = undefined;
 		materiasSeleccionadas = materiasSeleccionadas.filter((materia) => materia.id !== idMateria);
 	};
+
+	// TODO: Evaluar cambiar modal por sobreescritura de calendario principal.
+	//TODO: resaltar traslapes en selección
+	let informacionMateria = $state({
+		materia: null as Materia | null,
+		traslapes: { materias: [] },
+		eventosSemana: {}
+	});
 </script>
 
 <article
@@ -35,11 +60,17 @@
 	bind:this={articleListaMaterias}
 >
 	{#if materiasSeleccionadas.length > 0}
-		<ul class="block w-full" id="lista-materias">
+		<ul class="block w-full border-4 border-transparent" id="lista-materias">
 			{#each materiasSeleccionadas as materia}
 				<li
-					class="text-textomateria my-0.5 inline-flex w-[100%] gap-2 rounded-xl p-2 font-semibold hyphens-auto"
-					style="background-color: {colorMateria(tema, materia).cssRGBA()};"
+					class="text-textomateria my-0.5 inline-flex w-[100%] gap-2 rounded-xl border-2 border-transparent p-2 font-semibold hyphens-auto"
+					style="background-color: {colorMateria(tema, materia).cssRGBA()}; {materiaParaDetalles
+						? traslapesMateriaActiva?.find((m) => m.id === materia.id) // Bordear si se traslapa con la materia seleccionada
+							? 'outline: 3px solid red;'
+							: materiaParaDetalles.id !== materia.id // Transparentar si no es la materia seleccionada
+								? 'opacity: 0.5;'
+								: ''
+						: ''} "
 				>
 					<div class="w-16 content-center text-wrap break-words">
 						{materia.grupo}
@@ -50,6 +81,23 @@
 					<div class="w-[calc((100%-5rem)/2)] content-center">
 						{materia.profesor}
 					</div>
+					<div class="w-8 content-center">
+						<button
+							class="ratio-1x1 center flex w-full items-center justify-center p-0!"
+							aria-label="Abrir información de la materia"
+							onclick={() => {
+								if (materiaParaDetalles === materia) materiaParaDetalles = undefined;
+								else materiaParaDetalles = materia;
+							}}
+						>
+							{#if traslapes.get(materia.id)?.length ?? 0 > 0}
+								<SvgWarn />
+							{:else}
+								<SvgTick />
+							{/if}
+						</button>
+					</div>
+
 					<div class="w-8 content-center">
 						<Eliminar click={eliminarMateriaPorId} nombre={materia.id}></Eliminar>
 					</div>

@@ -18,12 +18,49 @@ export const obtenerNombresDeMaterias = (materias: Materia[]) => {
 	return new Set(materias.map((materia) => materia.nombre));
 };
 
-export const crearCombinaciones = (materiasSeleccionadas: Materia[]) => {
+const chocanHoras = (clase1: Clase, clase2: Clase): boolean => {
+	if (clase1.dia != clase2.dia) return false;
+
+	let matchInicio1 = clase1.horaInicio.match(HORA_REGEX);
+	let matchFin1 = clase1.horaFin.match(HORA_REGEX);
+	let matchInicio2 = clase2.horaInicio.match(HORA_REGEX);
+	let matchFin2 = clase2.horaFin.match(HORA_REGEX);
+
+	if (matchInicio1 === null)
+		throw new Error('La hora de inicio de la clase 1 no es una hora válida');
+	if (matchFin1 === null) throw new Error('La hora de fin de la clase 1 no es una hora válida');
+	if (matchInicio2 === null)
+		throw new Error('La hora de inicio de la clase 2 no es una hora válida');
+	if (matchFin2 === null) throw new Error('La hora de fin de la clase 2 no es una hora válida');
+
+	let clase1Inicio = Number(matchInicio1[1]) + Number(matchInicio1[2]) / 60;
+	let clase1Fin = Number(matchFin1[1]) + Number(matchFin1[2]) / 60;
+	let clase2Inicio = Number(matchInicio2[1]) + Number(matchInicio2[2]) / 60;
+	let clase2Fin = Number(matchFin2[1]) + Number(matchFin2[2]) / 60;
+
+	return (
+		(clase1Inicio <= clase2Inicio && clase2Inicio < clase1Fin) ||
+		(clase2Inicio <= clase1Inicio && clase1Inicio < clase2Fin)
+	);
+};
+
+export const chocanHorario = (materia1: Materia, materia2: Materia): boolean => {
+	for (let j = 0; j < materia1.horario.length; j++) {
+		const clase1 = materia1.horario[j];
+		for (let k = 0; k < materia2.horario.length; k++) {
+			const clase2 = materia2.horario[k];
+			if (chocanHoras(clase1, clase2)) return true;
+		}
+	}
+	return false;
+};
+
+const agruparMaterias = (materias: Materia[]) => {
 	let horariosMateria: Map<string, Materia[]> = new Map();
 	let nombres: Set<string> = new Set();
 
-	for (let i = 0; i < materiasSeleccionadas.length; i++) {
-		const materia = materiasSeleccionadas[i];
+	for (let i = 0; i < materias.length; i++) {
+		const materia = materias[i];
 		nombres.add(materia.nombre);
 		if (!horariosMateria.has(materia.nombre)) {
 			horariosMateria.set(materia.nombre, []);
@@ -32,45 +69,14 @@ export const crearCombinaciones = (materiasSeleccionadas: Materia[]) => {
 		horariosMateria.get(materia.nombre)?.push(materia);
 	}
 
+	return { horariosMateria, nombres };
+};
+
+export const crearCombinaciones = (materiasSeleccionadas: Materia[]) => {
+	const { horariosMateria, nombres } = agruparMaterias(materiasSeleccionadas);
+
 	let horariosPosibles: Materia[][] = [];
 	let listaNombres = [...nombres];
-
-	const chocanHoras = (clase1: Clase, clase2: Clase): boolean => {
-		if (clase1.dia != clase2.dia) return false;
-
-		let matchInicio1 = clase1.horaInicio.match(HORA_REGEX);
-		let matchFin1 = clase1.horaFin.match(HORA_REGEX);
-		let matchInicio2 = clase2.horaInicio.match(HORA_REGEX);
-		let matchFin2 = clase2.horaFin.match(HORA_REGEX);
-
-		if (matchInicio1 === null)
-			throw new Error('La hora de inicio de la clase 1 no es una hora válida');
-		if (matchFin1 === null) throw new Error('La hora de fin de la clase 1 no es una hora válida');
-		if (matchInicio2 === null)
-			throw new Error('La hora de inicio de la clase 2 no es una hora válida');
-		if (matchFin2 === null) throw new Error('La hora de fin de la clase 2 no es una hora válida');
-
-		let clase1Inicio = Number(matchInicio1[1]) + Number(matchInicio1[2]) / 60;
-		let clase1Fin = Number(matchFin1[1]) + Number(matchFin1[2]) / 60;
-		let clase2Inicio = Number(matchInicio2[1]) + Number(matchInicio2[2]) / 60;
-		let clase2Fin = Number(matchFin2[1]) + Number(matchFin2[2]) / 60;
-
-		return (
-			(clase1Inicio <= clase2Inicio && clase2Inicio < clase1Fin) ||
-			(clase2Inicio <= clase1Inicio && clase1Inicio < clase2Fin)
-		);
-	};
-
-	const chocanHorario = (materia1: Materia, materia2: Materia): boolean => {
-		for (let j = 0; j < materia1.horario.length; j++) {
-			const clase1 = materia1.horario[j];
-			for (let k = 0; k < materia2.horario.length; k++) {
-				const clase2 = materia2.horario[k];
-				if (chocanHoras(clase1, clase2)) return true;
-			}
-		}
-		return false;
-	};
 
 	const crearHorario = (horario: Materia[] = []) => {
 		const i = horario.length;
